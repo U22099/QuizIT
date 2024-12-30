@@ -32,7 +32,7 @@ export function FileInput({ setData }: FileInputProps ): JSX.Element {
           error: false,
           data: result
         });
-      } catch (e) {
+      } catch (e: Error) {
         setOutput({
           error: true,
           data: e.message

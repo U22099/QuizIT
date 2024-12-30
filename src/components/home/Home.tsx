@@ -3,7 +3,7 @@ import { TextInput } from "./components/TextInput";
 import { FileInput } from "./components/FileInput";
 
 export function Home(): JSX.Element{
-  const [ data, setData ] = useState<string>("");
+  const [ _ , setData ] = useState<string>("");
   return(
     <main>
       <TextInput setData={setData} />
