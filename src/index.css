@@ -6,10 +6,10 @@
   .bg-primary{
     @apply bg-gray-200 dark:bg-gray-700
   }
-  .text-theme{
+  .text-text{
     @apply text-black dark:text-white
   }
-  .bg-theme{
+  .bg-body{
     @apply bg-white dark:bg-black
   }
 }
