@@ -6,23 +6,27 @@ interface FileInputProps {
 
 export function FileInput({ setData }: FileInputProps ): JSX.Element {
   const [ output, setOutput ] = useState<{
-    error: boolean | null,
-    data: string
+    error: boolean,
+    data: string,
+    type: string
   }>({
     error: false,
-    data: "Add File or Image"
+    data: "Add File or Image",
+    type: "text"
   });
   const MAX_FILE_SIZE = 7 * 1024 * 1024; //7mb
   const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || !e.target.files[0]) {
       setOutput({
         error: true,
-        data: "No files selected"
+        data: "No files selected",
+        type: "text"
       });
     } else if(e.target.files[0].size > MAX_FILE_SIZE){
       setOutput({
         error: true,
-        data: "File size too large"
+        data: "File size too large",
+        type: "text"
       });
     } else {
       try {
@@ -30,12 +34,14 @@ export function FileInput({ setData }: FileInputProps ): JSX.Element {
         setData(result);
         setOutput({
           error: false,
-          data: result
+          data: result,
+          type: ["image", "pdf"].find(x => result.includes(x)) || ""
         });
       } catch (e: any) {
         setOutput({
           error: true,
-          data: e?.message || ""
+          data: e?.message || "",
+          type: "text"
         });
         console.log(e);
       }
@@ -43,14 +49,15 @@ export function FileInput({ setData }: FileInputProps ): JSX.Element {
   }
   return (
     <section>
-      <label className="flex justify-center items-center border rounded-md p-2 text-md w-40 h-48" htmlFor="input">
+      <label className="flex justify-center items-center border rounded-md p-2 text-md w-60 h-48" htmlFor="input">
         {output.error ? <p className="font-bold text-red-600">{output.data}</p> 
-        : output.data.includes("image") ?
+        : output.type === "image" ?
           <img src={output.data} className="w-full h-full object-cover" /> 
-        : output.data.includes("pdf") ? <embed src={output.data} className="w-full h-full object-cover" /> : <p className="fold-bold text-theme">{output.data}</p>}
+        : output.type === "pdf" ? <embed src={output.data} className="w-full h-full object-cover" /> : <p className="fold-bold text-theme">{output.data}</p>}
         <input
+          id="input"
           type="file"
-          accept=".pdf,.jpeg,.png,.jpg"
+          accept=".pdf, .jpeg, .png, .jpg"
           onChange={handleFile}
           hidden
         />

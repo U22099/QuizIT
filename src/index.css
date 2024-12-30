@@ -6,4 +6,7 @@
   .text-theme{
     @apply text-black dark:text-white
   }
+  .bg-theme{
+    @apply bg-white dark:bg-black
+  }
 }
