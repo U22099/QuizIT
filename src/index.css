@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer base{
+  .bg-primary{
+    @apply bg-gray-200 dark:bg-gray-700
+  }
   .text-theme{
     @apply text-black dark:text-white
   }

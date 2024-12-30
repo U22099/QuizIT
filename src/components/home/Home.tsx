@@ -7,7 +7,7 @@ export function Home(): JSX.Element{
   const [ _ , setData ] = useState<string>("");
   const [ nav, setNav ] = useState<string>("text");
   return(
-    <main className="bg-none flex flex-col gap-2 justify-start items-center mt-8 w-full h-full">
+    <main className="bg-none flex flex-col gap-2 justify-start items-center mt-5 w-full h-full">
       <section className="flex gap-2 w-fit mx-auto">
         {nav === "text" ? <TextInput setData={setData} /> : <FileInput setData={setData} />}
         <InputNav setNav={setNav} nav={nav} />

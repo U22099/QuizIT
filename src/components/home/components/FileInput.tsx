@@ -49,7 +49,7 @@ export function FileInput({ setData }: FileInputProps ): JSX.Element {
   }
   return (
     <section>
-      <label className="flex justify-center items-center border rounded-md p-2 text-md w-60 h-52 bg-none backdrop-blur-sm" htmlFor="input">
+      <label className="flex justify-center items-center border rounded-md p-2 text-md w-60 h-52 bg-transparent backdrop-blur-sm" htmlFor="input">
         {output.error ? <p className="font-bold text-red-600">{output.data}</p> 
         : output.type === "image" ?
           <img src={output.data} className="w-full h-full object-cover" /> 
