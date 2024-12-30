@@ -50,7 +50,7 @@ export function FileInput({ setData }: FileInputProps ): JSX.Element {
         : output.data.includes("pdf") ? <embed src={output.data} className="w-full h-full object-cover" /> : <p className="fold-bold text-theme">{output.data}</p>}
         <input
           type="file"
-          accepts=".pdf,.jpeg,.png,.jpg"
+          accept=".pdf,.jpeg,.png,.jpg"
           onChange={handleFile}
           hidden
         />
