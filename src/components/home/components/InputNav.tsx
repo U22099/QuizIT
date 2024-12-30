@@ -8,9 +8,9 @@ interface InputNavProps{
 }
 
 export function InputNav({ nav, setNav }: InputNavProps): JSX.Element{
-  const custom_style = "flex justify-center items-center p-2 rounded-md w-7 h-7 "
+  const custom_style = " flex justify-center items-center p-2 rounded-md w-8 h-8";
   return(
-    <nav className="bg-gray-200 dark:bg-gray-800 flex flex-col gap-2 p-2 rounded-md">
+    <nav className="bg-gray-200 dark:bg-gray-800 flex flex-col gap-2 p-2 rounded-md h-fit my-auto">
       <FaPencil onClick={() => setNav("text")} className={nav === "text" ? "bg-black dark:bg-white fill-white dark:fill-black"+custom_style : "fill-black dark:fill-white"+custom_style} />
       <FaFilePdf onClick={() => setNav("file")} className={nav === "file" ? "bg-black dark:bg-white fill-white dark:fill-black"+custom_style : "fill-black dark:fill-white"+custom_style} />
     </nav>
