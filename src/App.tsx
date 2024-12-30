@@ -1,7 +1,8 @@
-//import { useState } from 'react';
+import { JSX } from 'react';
+import { Home } from "./components/home/Home";
 
 function App() {
-  return <p>Hello</p>
+  return <Home />
 }
 
 export default App;
