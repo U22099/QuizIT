@@ -4,6 +4,6 @@
 
 @layer base{
   .text-theme{
-    text-black dark:text-white
+    @apply text-black dark:text-white
   }
 }
