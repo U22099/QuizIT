@@ -16,6 +16,7 @@ interface HomeProps{
 }
 
 export function Home({ setExam }: HomeProps): JSX.Element{
+  console.log(import.meta.env.VITE_GEMINI_API_KEY);
   const [ data , setData ] = useState<{
     type: string,
     data: string
