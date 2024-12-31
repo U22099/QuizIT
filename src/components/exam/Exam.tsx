@@ -41,7 +41,7 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
   }, []);
   
   useEffect(() => {
-    if(time > 0){
+    if(time > 0 && !resultPage){
       setTimer(formatTime(time))
     }
   }, [time]);
@@ -73,7 +73,7 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
           user_answer: answers[i],
           ai_answer: ques.answer
       }} />)}
-      {!resultPage&&<button onClick={() => setResultPage(true)} className="w-full button">Submit</button>}
+      {!resultPage&&<button onClick={() => setResultPage(true)} className="w-full button mx-2">Submit</button>}
     </main>
   )
 }
