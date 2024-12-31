@@ -53,7 +53,7 @@ export function FileInput({ setData }: FileInputProps ): JSX.Element {
         {output.error ? <p className="font-bold text-red-600">{output.data}</p> 
         : output.type === "image" ?
           <img src={output.data} className="w-full h-full object-cover" /> 
-        : output.type === "pdf" ? <embed src={output.data} className="w-full h-full object-cover" /> : <p className="fold-bold text-theme">{output.data}</p>}
+        : output.type === "pdf" ? <embed src={output.data} className="w-full h-full object-cover" /> : <p className="fold-bold text-text">{output.data}</p>}
         <input
           id="input"
           type="file"
