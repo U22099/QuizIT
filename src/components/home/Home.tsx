@@ -22,14 +22,14 @@ export function Home(): JSX.Element{
     console.log(configurations);
   }, [configurations])
   return(
-    <main className="bg-none flex flex-col gap-2 justify-start items-center mt-5 w-full h-full">
+    <main className="bg-none flex flex-col gap-2 justify-start items-center mt-5 w-full h-full p-3">
       <h1 className="text-xl font-bold text-text">Sample Question</h1>
       <section className="flex gap-2 w-fit mx-auto">
         {nav === "text" ? <TextInput setData={setData} /> : <FileInput setData={setData} />}
         <InputNav setNav={setNav} nav={nav} />
       </section>
       <CustomConfiguration setConfigurations={setConfigurations} />
-      <button className="bg-primary rounded w-full">Generate Exam</button>
+      <button className="w-full button">Generate Exam</button>
     </main>
   )
 }

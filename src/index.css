@@ -15,4 +15,7 @@
   .check-box{
     @apply accent-black dark:accent-[#0F0D0D]
   }
+  .button{
+    @apply bg-body py-4 px-2 rounded shadow-sm active:transform active:scale-90 active:transition-transform
+  }
 }

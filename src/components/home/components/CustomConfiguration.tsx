@@ -32,7 +32,7 @@ export function CustomConfiguration({ setConfigurations }: CustomConfigurationPr
   return(
     <section className="flex flex-col gap-3 mt-2 w-full items-start justify-start">
       <div className="flex gap-2">
-        <input onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDisabled(e.target.checked)} type="checkbox" className="check-box" id="checkbox" checked/>
+        <input onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDisabled(e.target.checked)} type="checkbox" className="check-box" id="checkbox" defaultChecked/>
         <label htmlFor="checkbox" className="font-bold text-sm text-text">Use AI configuration</label>
       </div>
       <div className={(disabled ? "pointer-events-none opacity-50 " : "") + "flex flex-col gap-2"}>
