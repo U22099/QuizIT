@@ -27,6 +27,7 @@ export function Home(): JSX.Element{
         <InputNav setNav={setNav} nav={nav} />
       </section>
       <CustomConfiguration setConfigurations={setConfigurations} />
+      <button className="bg-primary rounded w-full">Generate Exam</button>
     </main>
   )
 }

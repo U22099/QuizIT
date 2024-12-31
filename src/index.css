@@ -4,7 +4,7 @@
 
 @layer base{
   .bg-primary{
-    @apply bg-gray-200 dark:bg-slate-900
+    @apply bg-gray-200 dark:bg-[#0F0D0D]
   }
   .text-text{
     @apply text-black dark:text-white
@@ -13,6 +13,6 @@
     @apply bg-white dark:bg-black
   }
   .check-box{
-    @apply accent-black dark:accent-slate-900
+    @apply accent-black dark:accent-[#0F0D0D]
   }
 }
