@@ -37,14 +37,14 @@ export function CustomConfiguration({ setConfigurations }: CustomConfigurationPr
       </div>
       <div className={(disabled ? "pointer-events-none opacity-50 " : "") + "flex flex-col gap-2"}>
         <h1 className="text-xl font-bold text-text">Custom Configuration</h1>
-        <div className="flex gap-2">
-          <label htmlFor="number" className="font-bold text-sm text-text">Number of questions</label>
+        <div className="flex gap-2 justify-start items-center">
+          <label htmlFor="number" className="font-bold text-md text-text">Number of questions</label>
           <input onChange={handleQuestionNumber} type="number" id="number" inputMode="numeric" className="w-10 h-9 bg-primary p-2 rounded-md border focus-visible:outline-none text-text" placeholder="0"/>
         </div>
-        <div className="flex gap-2">
-          <label htmlFor="time" className="font-bold text-sm text-text">Time</label>
+        <div className="flex gap-2 justify-start items-center">
+          <label htmlFor="time" className="font-bold text-md text-text">Time</label>
           <div className="flex justify-start items-center gap-2 w-bg-primary p-2 rounded-md border">
-            <input onChange={handleTime} type="number" id="time" inputMode="numeric" className="w-10 h-8 bg-transparent focus-visible:outline-none text-text" placeholder="0"/>
+            <input onChange={handleTime} type="number" id="time" inputMode="numeric" className="w-10 bg-transparent focus-visible:outline-none text-text" placeholder="0"/>
             <p className="font-bold text-text">mins</p>
           </div>
         </div>
