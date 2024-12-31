@@ -36,7 +36,7 @@ const schema = {
 interface InputType {
   input: string,
   configurations: {
-    diabled: boolean,
+    disabled: boolean,
     time: number,
     questions: number
   }
@@ -48,7 +48,7 @@ interface OutputType {
 }
 
 // Asynchronous function to generate exam from text using Google Gemini.
-export async function GenerateExamForText(data: InputType): OutputType {
+export async function GenerateExamForText(data: InputType): Promise<OutputType> {
   // Creates a new Google Generative AI instance.
   const genAI = new GoogleGenerativeAI(import.meta.env.GEMINI_API_KEY);
   // Gets the Gemini 2.0 Flash Thinking model with specific generation configurations and system instructions.
@@ -80,7 +80,7 @@ export async function GenerateExamForText(data: InputType): OutputType {
 }
 
 // Asynchronous function to generate exams from a file using Google Gemini.
-export async function GenerateExamForFile(file: InputType): OutputType {
+export async function GenerateExamForFile(file: InputType): Promise<OutputType> {
   // Creates a new Google Generative AI instance.
   const genAI = new GoogleGenerativeAI(import.meta.env.GEMINI_API_KEY);
   // Gets the Gemini 2.0 Flash Thinking model with specific generation configurations and system instructions.
@@ -93,7 +93,7 @@ export async function GenerateExamForFile(file: InputType): OutputType {
     systemInstruction: "You are an expert at generating examination questions from sampke question and also giving answers to each question while assigning a total time frame in minutes expected for the student to complete the exam", //Instruction for the model.
   });
   // Defines the prompt for generating exam from a file.
-  const prompt = `Generate an examination question for the sample input file.\n${data.configurations.disabled ? "": `\nmake sure the questions is exactly ${data.configurations.questions || 10} in numbers and its within the timeframe of ${data.configurations.time}`}`;
+  const prompt = `Generate an examination question for the sample input file.\n${file.configurations.disabled ? "": `\nmake sure the questions is exactly ${file.configurations.questions || 10} in numbers and its within the timeframe of ${file.configurations.time}`}`;
 
   try {
     // Converts the file to the required format.

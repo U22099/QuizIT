@@ -11,5 +11,12 @@ interface ExamProps {
 }
 
 export function Exam({ setExam }: ExamProps): JSX.Element {
+  setExam({
+    started: true,
+    data: {
+      time: 0,
+      data: []
+    }
+  })
   return <p>Exam</p>
 }

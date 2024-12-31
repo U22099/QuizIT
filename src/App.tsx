@@ -1,6 +1,6 @@
 import { JSX, useState } from 'react';
 import { Home } from "./components/home/Home";
-import { Exam } from "./components/home/Exam";
+import { Exam } from "./components/exam/Exam";
 
 function App(): JSX.Element {
   const [ exam, setExam ] = useState<{
