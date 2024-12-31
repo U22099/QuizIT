@@ -58,10 +58,10 @@ export async function GenerateExamForText(data: InputType): Promise<OutputType> 
       responseMimeType: "application/json", //Specifies the response type as JSON.
       responseSchema: schema, //Specifies the schema for the response.
     },
-    systemInstruction: "You are an expert at generating examination questions from sample question and also giving answers to each question while assigning a total time frame in minutes expected for the student to complete the exam", //Instruction for the model.
+    systemInstruction: "You are an expert at generating examination questions from sample questions and also giving answers to each question while assigning a total time frame in minutes expected for the student to complete the exam", //Instruction for the model.
   });
   // Defines the prompt for generating exam.
-  const prompt = `Using the input below as a sample, generate a new set of examination questions:\n${data.input}${data.configurations.disabled ? "": `\nmake sure the questions is exactly ${data.configurations.questions || 10} in numbers and its within the timeframe of ${data.configurations.time}`}`;
+  const prompt = `Using the input below as a sample, generate a new set of examination questions:\n${data.input}${data.configurations.disabled ? "": `\nmake sure the questions is exactly ${data.configurations.questions || 10} in numbers and its within the timeframe of ${data.configurations.time}`}\nDo not generate same questions as given in the sample data just generate similar questions`;
 
   try {
     // Generates exams from the given text using the model.
@@ -93,7 +93,7 @@ export async function GenerateExamForFile(file: InputType): Promise<OutputType> 
     systemInstruction: "You are an expert at generating new examination questions from sample question and also giving answers to each question while assigning a total time frame in minutes expected for the student to complete the exam", //Instruction for the model.
   });
   // Defines the prompt for generating exam from a file.
-  const prompt = `Using the input file as a sample, generate a new set of examination questions.\n${file.configurations.disabled ? "": `\nmake sure the questions is exactly ${file.configurations.questions || 10} in numbers and its within the timeframe of ${file.configurations.time}`}`;
+  const prompt = `Using the input file as a sample, generate a new set of examination questions.\n${file.configurations.disabled ? "": `\nmake sure the questions is exactly ${file.configurations.questions || 10} in numbers and its within the timeframe of ${file.configurations.time}`}\nDo not generate same questions as given in the sample data just generate similar questions`;
 
   try {
     // Converts the file to the required format.
