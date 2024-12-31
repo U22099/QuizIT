@@ -21,14 +21,14 @@ interface ExamProps {
 }
 
 export function Exam({ setExam, exam }: ExamProps): JSX.Element {
-  const answers: string[] | [] = [];
+  let answers: string[] | [];
   const [ resultPage, setResultPage ] = useState<boolean>(false);
   const [ timer, setTimer ] = useState<string>("00:00:00");
   const [ time, setTime ] = useState<number>(exam.data.time * 60);
   
   useEffect(() => {
     const interval = setInterval(() => {
-      if(time > 0){
+      if(time > 0 && !resultPage){
         setTime(prevTime => prevTime - 1);
       } else {
         setResultPage(true);
@@ -62,15 +62,14 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
         <div className={(time/60 < 5 ? "bg-red-600 ": "bg-green-600 ") +"p-2 rounded-md flex justify-center items-center text-text"}>{timer}</div>
       </nav>
       {!resultPage ? exam.data.data.map((ques: { question: string, answer: string }, i: number) => <ExamList data={{
-        question: ques.question,
-        action: (data: string): void => {
-          answers[i] = data;
-          console.log(data);
-        }
+          question: ques.question,
+          action: (data: string): void => {
+            answers[i] = data;
+          }
       }}/>) : exam.data.data.map((ques: { question: string, answer: string }, i: number) => <AnswerList data={{
-        question: ques.question,
-        user_answer: answers[i],
-        ai_answer: ques.answer
+          question: ques.question,
+          user_answer: answers[i],
+          ai_answer: ques.answer
       }} />)}
       {!resultPage&&<button onClick={() => setResultPage(true)} className="w-full button">Submit</button>}
     </main>
