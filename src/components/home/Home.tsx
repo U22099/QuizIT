@@ -48,7 +48,7 @@ export function Home({ setExam }: HomeProps): JSX.Element{
         data: response
       });
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
   return(
