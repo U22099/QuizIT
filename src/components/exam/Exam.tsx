@@ -7,14 +7,14 @@ interface ExamProps {
     started: boolean,
     data: {
       time: number,
-      data: { question: string, answer: string }[] | []
+      data: { question: string, answer: string }[]
     }
   }>>,
   exam: {
     started: boolean,
     data: {
       time: number,
-      data: { question: string, answer: string }[] | []
+      data: { question: string, answer: string }[]
     }
   }
 }
@@ -30,7 +30,7 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
         })}/>
         <div className="p-2 rounded-md flex justify-center items-center bg-green-700 text-text">2:00:00</div>
       </nav>
-      {exam.data.map((ques: { question: string, answer: string }, i: number) => <ExamList data={{
+      {exam.data.data.map((ques: { question: string, answer: string }, i: number) => <ExamList data={{
         question: ques.question,
         action: (data: string): void => {
           answers[i] = data;
