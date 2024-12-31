@@ -50,7 +50,7 @@ interface OutputType {
 // Asynchronous function to generate exam from text using Google Gemini.
 export async function GenerateExamForText(data: InputType): Promise<OutputType> {
   // Creates a new Google Generative AI instance.
-  const genAI = new GoogleGenerativeAI(import.meta.env.GEMINI_API_KEY);
+  const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
   // Gets the Gemini 2.0 Flash Thinking model with specific generation configurations and system instructions.
   const model = genAI.getGenerativeModel({
     model: "gemini-2.0-flash-thinking-exp-1219",
@@ -82,7 +82,7 @@ export async function GenerateExamForText(data: InputType): Promise<OutputType> 
 // Asynchronous function to generate exams from a file using Google Gemini.
 export async function GenerateExamForFile(file: InputType): Promise<OutputType> {
   // Creates a new Google Generative AI instance.
-  const genAI = new GoogleGenerativeAI(import.meta.env.GEMINI_API_KEY);
+  const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
   // Gets the Gemini 2.0 Flash Thinking model with specific generation configurations and system instructions.
   const model = genAI.getGenerativeModel({
     model: "gemini-2.0-flash-thinking-exp-1219",
