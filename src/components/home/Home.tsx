@@ -9,10 +9,12 @@ export function Home(): JSX.Element{
   const [ _ , setData ] = useState<string>("");
   const [ configurations , setConfigurations ] = useState<{
     time: number,
-    questions: number
+    questions: number,
+    disabled: boolean,
   }>({
     time: 0,
-    questions: 0
+    questions: 0,
+    disabled: true
   });
   const [ nav, setNav ] = useState<string>("text");
   
