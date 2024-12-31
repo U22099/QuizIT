@@ -21,7 +21,7 @@ interface ExamProps {
 }
 
 export function Exam({ setExam, exam }: ExamProps): JSX.Element {
-  const answers = [];
+  const answers: string[] | [] = [];
   const [ resultPage, setResultPage ] = useState<boolean>(false);
   const [ timer, setTimer ] = useState<string>("00:00:00");
   const [ time, setTime ] = useState<number>(exam.data.time * 60);
@@ -78,11 +78,11 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
 
 function formatTime(seconds: number): string{
   const date = new Date(seconds * 1000);
-  const hours = date.getUTCHours();
-  const minutes = date.getUTCMinutes();
-  const seconds = date.getUTCSeconds();
+  const hrs = date.getUTCHours();
+  const mins = date.getUTCMinutes();
+  const secs = date.getUTCSeconds();
 
-  return `${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
+  return `${padZero(hrs)}:${padZero(mins)}:${padZero(secs)}`;
 }
 
 function padZero(value: number): string {
