@@ -10,7 +10,7 @@ interface HomeProps{
     started: boolean,
     data: {
       time: number,
-      data: { question: string, answer: string }[]
+      data: { question: string, answer: string }[] | []
     }
   }>>
 }
