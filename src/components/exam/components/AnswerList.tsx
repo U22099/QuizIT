@@ -15,7 +15,7 @@ export function AnswerList({ data }: AnswerListProps): JSX.Element {
       <div className="ml-2 flex justify-start items-center font-bold text-text" dangerouslySetInnerHTML={{__html: markdownToHtml(data.question)}} />
       <h1 className="font-extrabold text-text text-lg">Your Answer</h1>
       <div className="ml-2 flex justify-start items-center font-bold text-text" dangerouslySetInnerHTML={{__html: markdownToHtml(data.user_answer)}} />
-      <h1 className="font-extrabold text-text text-lg">Your Answer</h1>
+      <h1 className="font-extrabold text-text text-lg">AI's Answer</h1>
       <div className="ml-2 flex justify-start items-center font-bold text-green-600" dangerouslySetInnerHTML={{__html: markdownToHtml(data.ai_answer)}} />
     </section>
   )

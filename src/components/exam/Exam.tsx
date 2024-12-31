@@ -61,7 +61,7 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
         })}/>
         <div className={(time/60 < 5 ? "bg-red-600 ": "bg-green-600 ") +"p-2 rounded-md flex justify-center items-center text-text"}>{timer}</div>
       </nav>
-      {resultPage ? exam.data.data.map((ques: { question: string, answer: string }, i: number) => <ExamList data={{
+      {!resultPage ? exam.data.data.map((ques: { question: string, answer: string }, i: number) => <ExamList data={{
         question: ques.question,
         action: (data: string): void => {
           answers[i] = data;
