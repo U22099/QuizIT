@@ -21,8 +21,8 @@ export function Home(): JSX.Element{
   }, [configurations])
   return(
     <main className="bg-none flex flex-col gap-2 justify-start items-center mt-5 w-full h-full">
+      <h1 className="text-xl font-bold">Sample Question</h1>
       <section className="flex gap-2 w-fit mx-auto">
-        <h1 className="text-xl font-bold">Sample Question</h1>
         {nav === "text" ? <TextInput setData={setData} /> : <FileInput setData={setData} />}
         <InputNav setNav={setNav} nav={nav} />
       </section>

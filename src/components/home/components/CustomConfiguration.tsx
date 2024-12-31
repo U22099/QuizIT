@@ -36,12 +36,12 @@ export function CustomConfiguration({ setConfigurations }: CustomConfigurationPr
         <h1 className="text-xl font-bold">Custom Configuration</h1>
         <div className="flex gap-2">
           <label htmlFor="number" className="font-bold text-sm text-text">Number of questions</label>
-          <input onChange={handleQuestionNumber} type="number" input-mode="numeric" className="w-12 h-9 bg-primary p-2 rounded-md border focus-visible:outline-none" placeholder="0"/>
+          <input onChange={handleQuestionNumber} type="number" id="number" inputmode="numeric" className="w-12 h-9 bg-primary p-2 rounded-md border focus-visible:outline-none" placeholder="0"/>
         </div>
         <div className="flex gap-2">
           <label htmlFor="time" className="font-bold text-sm text-text">Time</label>
           <div className="flex gap-2 w-fit h-fit bg-primary p-2 rounded-md border">
-            <input onChange={handleTime} type="time" input-mode="numeric" className="w-12 h-9 bg-transparent focus-visible:outline-none" placeholder="0"/>
+            <input onChange={handleTime} type="number" id="time" inputmode="numeric" className="w-12 h-9 bg-transparent focus-visible:outline-none" placeholder="0"/>
             <p className="font-bold">mins</p>
           </div>
         </div>
