@@ -21,7 +21,7 @@ interface ExamProps {
 }
 
 export function Exam({ setExam, exam }: ExamProps): JSX.Element {
-  let answers: string[] | [];
+  const [ answers, setAnswers ] = useState<string[]>(new Array(exam.data.data.length).fill(""));
   const [ resultPage, setResultPage ] = useState<boolean>(false);
   const [ timer, setTimer ] = useState<string>("00:00:00");
   const [ time, setTime ] = useState<number>(exam.data.time * 60);
@@ -51,7 +51,7 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
   }, [resultPage]);
   return(
     <main className="flex flex-col gap-2 p-3 w-full h-full">
-      <nav className="flex w-full justify-between">
+      <nav className="flex w-full justify-between sticky top-0 left-0">
         <CiLogout className="fill-black dark:fill-white w-8 h-8" onClick={() => setExam({
           started: false,
           data: {
@@ -64,7 +64,9 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
       {!resultPage ? exam.data.data.map((ques: { question: string, answer: string }, i: number) => <ExamList data={{
           question: ques.question,
           action: (data: string): void => {
-            answers[i] = data;
+            setAnswers(
+              prevAns => prevAns.map((x, index) => index === i ? data : x)
+            )
           }
       }}/>) : exam.data.data.map((ques: { question: string, answer: string }, i: number) => <AnswerList data={{
           question: ques.question,
