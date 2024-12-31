@@ -32,7 +32,7 @@ export function CustomConfiguration({ setConfigurations }: CustomConfigurationPr
         <input onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDisabled(!e.target.checked)} type="checkbox" className="check-box" id="checkbox"/>
         <label htmlFor="checkbox" className="font-bold text-sm text-text">Use AI configuration</label>
       </div>
-      <div className={(diabled ? "pointer-events-none opacity-50 " : "") + "flex flex-col gap-2"}>
+      <div className={(disabled ? "pointer-events-none opacity-50 " : "") + "flex flex-col gap-2"}>
         <h1 className="text-xl font-bold">Custom Configuration</h1>
         <div className="flex gap-2">
           <label htmlFor="number" className="font-bold text-sm text-text">Number of questions</label>
