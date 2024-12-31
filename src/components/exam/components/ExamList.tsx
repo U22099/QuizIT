@@ -16,7 +16,7 @@ export function ExamList({ data }: ExamListProps): JSX.Element {
       <textarea
         className="ml-2 flex justify-center items-center border rounded-md p-2 text-sm w-full h-32 focus-visible:outline-none border bg-transparent backdrop-blur-sm text-text"
         placeholder="Input your solution"
-        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => data.action(e.target.value || "")}
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => data.action(e.target.value)}
       />
     </section>
   )

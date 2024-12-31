@@ -29,7 +29,7 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
   useEffect(() => {
     const interval = setInterval(() => {
       if(time > 0){
-        setTime(time - 1);
+        setTime(prevTime => prevTime - 1);
       } else {
         setResultPage(true);
         clearInterval(interval);
@@ -65,6 +65,7 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
         question: ques.question,
         action: (data: string): void => {
           answers[i] = data;
+          console.log(data);
         }
       }}/>) : exam.data.data.map((ques: { question: string, answer: string }, i: number) => <AnswerList data={{
         question: ques.question,
