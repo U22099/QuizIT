@@ -12,7 +12,7 @@ export default function markdownToHtml(markdown: string): string {
     breaks: true, // Convert line breaks to <br> tags.
     typographer: true, // Enable typographic replacements (e.g., smart quotes).
     // Custom highlight function for code syntax highlighting using highlight.js.
-    highlight: function(str, lang) {
+    highlight: function(str: string, lang: string) {
       // If a language is specified and highlight.js supports it.
       if (lang && hljs.getLanguage(lang)) {
         try {

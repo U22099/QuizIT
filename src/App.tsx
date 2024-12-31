@@ -11,7 +11,7 @@ function App(): JSX.Element {
   });
   return (
     <main className="bg-none flex justify-center items-center w-full h-full">
-      {exam.started ? <Exam setExam={setExam}/> : <Home setExam={setExam}/>}
+      {exam.started ? <Exam exam={exam} setExam={setExam}/> : <Home setExam={setExam}/>}
     </main>
   );
 }
