@@ -1,7 +1,10 @@
 import React, { JSX, useState, Dispatch, SetStateAction } from "react";
 
 interface FileInputProps {
-  setData: Dispatch<SetStateAction<string>> ;
+  setData: Dispatch<SetStateAction<{
+    type: string,
+    data: string
+  }>> ;
 }
 
 export function FileInput({ setData }: FileInputProps ): JSX.Element {
@@ -31,7 +34,7 @@ export function FileInput({ setData }: FileInputProps ): JSX.Element {
     } else {
       try {
         const result = await convertToBase64(e.target.files[0]);
-        setData(result);
+        setData({ type: "file", data: result});
         setOutput({
           error: false,
           data: result,
