@@ -9,6 +9,7 @@ interface CustomConfigurationProps{
 }
 export function CustomConfiguration({ setConfigurations }: CustomConfigurationProps ): JSX.Element{
   const [ disabled, setDisabled ] = useState<boolean>(true);
+  const [ error, setError ] = useState<string>("");
   
   const handleQuestionNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
     if(!e.target.value) return;
@@ -21,8 +22,12 @@ export function CustomConfiguration({ setConfigurations }: CustomConfigurationPr
   }
   
   const handleTime = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setError("");
     if(!e.target.value) return;
-    
+    if(parseInt(e.target.value) > 24 * 60){
+      setError("Time must be less than a day");
+      return;
+    }
     setConfigurations(prevValue => {
       return {...prevValue,
       disabled,
@@ -48,6 +53,7 @@ export function CustomConfiguration({ setConfigurations }: CustomConfigurationPr
             <p className="font-bold text-text">mins</p>
           </div>
         </div>
+        {error&&<p className="text-red-700 font-bold">{error}</p>}
       </div>
     </section>
   )

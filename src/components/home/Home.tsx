@@ -4,6 +4,7 @@ import { FileInput } from "./components/FileInput";
 import { InputNav } from "./components/InputNav.tsx";
 import { CustomConfiguration } from "./components/CustomConfiguration";
 import { GenerateExamForText, GenerateExamForFile } from "../../utils/generate-exam";
+import { FiLoader } from "react-icons/fi";
 
 interface HomeProps{
   setExam: Dispatch<SetStateAction<{
@@ -32,8 +33,10 @@ export function Home({ setExam }: HomeProps): JSX.Element{
     questions: 0,
     disabled: true
   });
+  const [ loading, setLoading ] = useState<boolean>(false);
   const [ nav, setNav ] = useState<string>("text");
   const handleSubmit = async () => {
+    setLoading(true);
     try {
       const response = data.type === "text" ? await GenerateExamForText({
         input: data.data,
@@ -49,6 +52,8 @@ export function Home({ setExam }: HomeProps): JSX.Element{
       });
     } catch (e) {
       console.log(e);
+    } finally {
+      setLoading(false);
     }
   }
   return(
@@ -59,7 +64,7 @@ export function Home({ setExam }: HomeProps): JSX.Element{
         <InputNav setNav={setNav} nav={nav} />
       </section>
       <CustomConfiguration setConfigurations={setConfigurations} />
-      <button onClick={handleSubmit} className="w-full button">Generate Exam</button>
+      <button disabled={loading} onClick={handleSubmit} className="w-full button">{ loading ? <FiLoader className="animate-spin w-8 h-8 fill-white dark:fill-black"/> : "Generate Exam" }</button>
     </main>
   )
 }

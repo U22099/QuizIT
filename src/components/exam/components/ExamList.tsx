@@ -9,12 +9,12 @@ interface ExamListProps {
 }
 export function ExamList({ data }: ExamListProps): JSX.Element {
   return (
-    <section className="flex flex-col gap-2">
+    <section className="flex flex-col gap-2 p-2">
       <h1 className="font-extrabold text-text text-lg">Question</h1>
-      <div className="flex justify-start items-center font-bold text-text" dangerouslySetInnerHTML={{__html: markdownToHtml(data.question)}} />
+      <div className="ml-2 flex justify-start items-center font-bold text-text" dangerouslySetInnerHTML={{__html: markdownToHtml(data.question)}} />
       <h1 className="font-extrabold text-text text-lg">Your Answer</h1>
       <textarea
-        className="flex justify-center items-center border rounded-md p-2 text-sm w-64 h-40 focus-visible:outline-none border bg-transparent backdrop-blur-sm"
+        className="ml-2 flex justify-center items-center border rounded-md p-2 text-sm w-full h-32 focus-visible:outline-none border bg-transparent backdrop-blur-sm text-text"
         placeholder="Input your solution"
         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => data.action(e.target.value || "")}
       />
