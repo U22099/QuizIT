@@ -50,8 +50,8 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
     if(resultPage) window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [resultPage]);
   return(
-    <main className="flex flex-col gap-2 p-3 w-full h-full">
-      <nav className="flex w-full justify-between sticky top-0 left-0 z-10 backdrop-blur-sm">
+    <main className="flex flex-col gap-2 p-2 w-full h-full">
+      <header className="flex w-full justify-between sticky top-0 left-0 z-10 backdrop-blur-sm">
         <CiLogout className="fill-black dark:fill-white w-8 h-8" onClick={() => setExam({
           started: false,
           data: {
@@ -60,7 +60,7 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
           }
         })}/>
         <div className={(time/60 < 5 ? "bg-red-600 ": "bg-green-600 ") +"p-2 rounded-md flex justify-center items-center text-text"}>{timer}</div>
-      </nav>
+      </header>
       {!resultPage ? exam.data.data.map((ques: { question: string, answer: string }, i: number) => <ExamList data={{
           question: ques.question,
           action: (data: string): void => {
@@ -73,7 +73,7 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
           user_answer: answers[i],
           ai_answer: ques.answer
       }} />)}
-      {!resultPage&&<button onClick={() => setResultPage(true)} className="w-full button mx-2">Submit</button>}
+      {!resultPage&&<button onClick={() => setResultPage(true)} className="w-full button">Submit</button>}
     </main>
   )
 }
