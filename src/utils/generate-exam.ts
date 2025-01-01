@@ -90,10 +90,10 @@ export async function GenerateExamForFile(file: InputType): Promise<OutputType> 
       responseMimeType: "application/json", //Specifies the response type as JSON.
       responseSchema: schema, //Specifies the schema for the response.
     },
-    systemInstruction: "You are an expert at generating new examination questions from sample question and also giving answers to each question while assigning a total time frame in minutes expected for the student to complete the exam", //Instruction for the model.
+    systemInstruction: "You are an expert at generating new examination questions from sample files or image containing sample questions to use as guidance in generating a different set of questions and also giving answers to each question while assigning a total time frame in minutes expected for the student to complete the exam", //Instruction for the model.
   });
   // Defines the prompt for generating exam from a file.
-  const prompt = `Using the input file as a sample, generate a new set of examination questions.\n${file.configurations.disabled ? "": `\nmake sure the questions is exactly ${file.configurations.questions || 10} in numbers and its within the timeframe of ${file.configurations.time}`}\nDo not generate same questions as given in the sample data just generate similar questions`;
+  const prompt = `Using the input file as a sample, generate a new set of examination questions similar to the questions in the file or image.\n${file.configurations.disabled ? "": `\nmake sure the questions is exactly ${file.configurations.questions || 10} in numbers and its within the timeframe of ${file.configurations.time}`}\nDo not generate same questions as given in the sample data`;
 
   try {
     // Converts the file to the required format.

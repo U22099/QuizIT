@@ -38,7 +38,7 @@ export function Home({ setExam }: HomeProps): JSX.Element{
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const response = data.type === "text" ? await GenerateExamForText({
+      const response = data.type === "t.ext" ? await GenerateExamForText({
         input: data.data,
         configurations
       }) : await GenerateExamForFile({
@@ -64,7 +64,7 @@ export function Home({ setExam }: HomeProps): JSX.Element{
         <InputNav setNav={setNav} nav={nav} />
       </section>
       <CustomConfiguration setConfigurations={setConfigurations} />
-      <button disabled={loading || (!data.data&&!configurations.disabled) || (!configurations.disabled&&!data.data) || (!configurations.disabled&&!configurations.time) || (!configurations.disabled&&!configurations.questions)} onClick={handleSubmit} className="w-full button">{ loading ? <FiLoader className="mx-auto animate-spin w-8 h-8 fill-white dark:fill-black"/> : "Generate Exam" }</button>
+      <button disabled={loading || !data.data || (!configurations.disabled && !configurations.time) || (!configurations.disabled && !configurations.questions)} onClick={handleSubmit} className="w-full button">{ loading ? <FiLoader className="mx-auto animate-spin w-8 h-8 fill-white dark:fill-black"/> : "Generate Exam" }</button>
     </main>
   )
 }
