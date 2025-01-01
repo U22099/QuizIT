@@ -4,31 +4,31 @@ import { ExamList } from "./components/ExamList";
 import { AnswerList } from "./components/AnswerList";
 
 interface ExamProps {
-  setExam: Dispatch<SetStateAction<{
+  setExam: Dispatch < SetStateAction < {
     started: boolean,
     data: {
       time: number,
-      data: { question: string, answer: string }[] | []
+      data: { question: string, answer: string } [] | []
     }
-  }>>,
+  } >> ,
   exam: {
     started: boolean,
     data: {
       time: number,
-      data: { question: string, answer: string }[] | []
+      data: { question: string, answer: string } [] | []
     }
   }
 }
 
 export function Exam({ setExam, exam }: ExamProps): JSX.Element {
-  const [ answers, setAnswers ] = useState<string[]>(new Array(exam.data.data.length).fill(""));
-  const [ resultPage, setResultPage ] = useState<boolean>(false);
-  const [ timer, setTimer ] = useState<string>("00:00:00");
-  const [ time, setTime ] = useState<number>(exam.data.time * 60);
-  
+  const [answers, setAnswers] = useState < string[] > (new Array(exam.data.data.length).fill(""));
+  const [resultPage, setResultPage] = useState < boolean > (false);
+  const [timer, setTimer] = useState < string > ("00:00:00");
+  const [time, setTime] = useState < number > (exam.data.time * 60);
+
   useEffect(() => {
     const interval = setInterval(() => {
-      if(time > 0 && !resultPage){
+      if (time > 0 && !resultPage) {
         setTime(prevTime => prevTime - 1);
       } else {
         setResultPage(true);
@@ -39,17 +39,19 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
       clearInterval(interval);
     }
   }, []);
-  
+
   useEffect(() => {
-    if(time > 0 && !resultPage){
+    if (time >= 0 && !resultPage) {
       setTimer(formatTime(time))
+    } else {
+      setResultPage(true);
     }
   }, [time]);
-  
+
   useEffect(() => {
-    if(resultPage) window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (resultPage) window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [resultPage]);
-  return(
+  return (
     <main className="flex flex-col gap-2 w-full h-full overflow-y-auto">
       <header className="flex w-full justify-between sticky top-0 left-0 z-10 backdrop-blur-sm py-2">
         <CiLogout className="fill-black dark:fill-white w-8 h-8" onClick={() => setExam({
@@ -80,7 +82,7 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
   )
 }
 
-function formatTime(seconds: number): string{
+function formatTime(seconds: number): string {
   const date = new Date(seconds * 1000);
   const hrs = date.getUTCHours();
   const mins = date.getUTCMinutes();
