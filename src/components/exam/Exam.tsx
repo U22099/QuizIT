@@ -51,7 +51,7 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
   }, [resultPage]);
   return(
     <main className="flex flex-col gap-2 p-2 w-full h-full overflow-y-auto mb-5">
-      <header className="flex w-full justify-between sticky top-0 left-0 z-10 backdrop-blur-sm">
+      <header className="flex w-full justify-between sticky top-0 left-0 z-10 backdrop-blur-sm py-2">
         <CiLogout className="fill-black dark:fill-white w-8 h-8" onClick={() => setExam({
           started: false,
           data: {
