@@ -38,7 +38,7 @@ export function Home({ setExam }: HomeProps): JSX.Element{
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const response = data.type === "t.ext" ? await GenerateExamForText({
+      const response = data.type === "text" ? await GenerateExamForText({
         input: data.data,
         configurations
       }) : await GenerateExamForFile({
