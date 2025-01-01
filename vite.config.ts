@@ -19,7 +19,7 @@ export default defineConfig({
       start_url: '/QuizIT',
       scope: '/',
       orientation: 'portrait',
-      theme_color: 'white',
+      theme_color: 'black',
       icons: [
         {
           src: "pwa-64x64.png",
