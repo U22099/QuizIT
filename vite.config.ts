@@ -16,8 +16,8 @@ export default defineConfig({
       description: 'An AI powered exam generator using sample question inputs and providing a simple digital examination environment with timer and ai calculated answers',
       background_color: 'black',
       display: 'standalone',
-      start_url: '/',
-      scope: '/QuizIT',
+      start_url: '/QuizIT',
+      scope: '/',
       orientation: 'portrait',
       theme_color: 'black',
       icons: [
