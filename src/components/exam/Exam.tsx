@@ -50,7 +50,7 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
     if(resultPage) window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [resultPage]);
   return(
-    <main className="flex flex-col gap-2 p-2 w-full h-full overflow-y-auto mb-5">
+    <main className="flex flex-col gap-2 w-full h-full overflow-y-auto">
       <header className="flex w-full justify-between sticky top-0 left-0 z-10 backdrop-blur-sm py-2">
         <CiLogout className="fill-black dark:fill-white w-8 h-8" onClick={() => setExam({
           started: false,
@@ -61,19 +61,21 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
         })}/>
         <div className={(time/60 < 5 ? "bg-red-600 ": "bg-green-600 ") +"p-2 rounded-md flex justify-center items-center text-text"}>{timer}</div>
       </header>
-      {!resultPage ? exam.data.data.map((ques: { question: string, answer: string }, i: number) => <ExamList data={{
-          question: ques.question,
-          action: (data: string): void => {
-            setAnswers(
-              prevAns => prevAns.map((x, index) => index === i ? data : x)
-            )
-          }
-      }}/>) : exam.data.data.map((ques: { question: string, answer: string }, i: number) => <AnswerList data={{
-          question: ques.question,
-          user_answer: answers[i],
-          ai_answer: ques.answer
-      }} />)}
-      {!resultPage&&<button onClick={() => setResultPage(true)} className="w-full button">Submit</button>}
+      <section className="flex flex-col gap-2 p-2 w-full h-full overflow-y-auto mb-5">
+        {!resultPage ? exam.data.data.map((ques: { question: string, answer: string }, i: number) => <ExamList data={{
+            question: ques.question,
+            action: (data: string): void => {
+              setAnswers(
+                prevAns => prevAns.map((x, index) => index === i ? data : x)
+              )
+            }
+        }}/>) : exam.data.data.map((ques: { question: string, answer: string }, i: number) => <AnswerList data={{
+            question: ques.question,
+            user_answer: answers[i],
+            ai_answer: ques.answer
+        }} />)}
+        {!resultPage&&<button onClick={() => setResultPage(true)} className="w-full button">Submit</button>}
+      </section>
     </main>
   )
 }
