@@ -7,7 +7,7 @@ const schema = {
   properties: {
     time: {
       type: SchemaType.NUMBER,
-      description: "time",
+      description: "timeframe in minutes",
     },
     data: {
       description: "data",
@@ -62,20 +62,32 @@ export async function GenerateExamForText(
       responseSchema: schema, //Specifies the schema for the response.
     },
     systemInstruction:
-      "You are an expert at generating examination questions from sample questions and also giving answers to each question while assigning a total time frame in minutes expected for the student to complete the exam", //Instruction for the model.
+      "You are to generate a set of questions with answers using the input file or image as a sample document. If not specified, assign a reasonable timeframe in which the user would be expected to finish the examination in minutes.", //Instruction for the model.
   });
   // Defines the prompt for generating exam.
-  const prompt = `Using the input below as a sample, generate a new set of examination questions:\n${
+  const prompt = `Using the input below as a sample, generate set of examination questions:\n${
     data.input
+  }\nThe questions must be ${
+    data.configurations.type === "exact"
+      ? "exactly the same as the input sample with no variable changes"
+      : data.configurations.type === "partial"
+      ? "exactly the same as the input sample but with variables changed"
+      : ""
   }${
     data.configurations.type === "custom"
       ? ""
-      : `\nmake sure the questions is exactly ${
+      : `\nThe questions must be ${
+          data.configurations.typeconfig === "exact"
+            ? "exactly the same as the input sample"
+            : data.configurations.typeconfig === "harder"
+            ? "harder than the input sample"
+            : "easier than the input sample"
+        } Make sure the questions is exactly ${
           data.configurations.questions || 10
         } in numbers and its within the timeframe of ${
           data.configurations.time
         }`
-  }\nDo not generate same questions as given in the sample data just generate similar questions`;
+  }`;
 
   try {
     // Generates exams from the given text using the model.
@@ -107,18 +119,30 @@ export async function GenerateExamForFile(
       responseSchema: schema, //Specifies the schema for the response.
     },
     systemInstruction:
-      "You are an expert at generating new examination questions from sample files or image containing sample questions to use as guidance in generating a different set of questions and also giving answers to each question while assigning a total time frame in minutes expected for the student to complete the exam", //Instruction for the model.
+      "You are to generate a set of questions with answers using the input file or image as a sample document. If not specified, assign a reasonable timeframe in which the user would be expected to finish the examination in minutes.", //Instruction for the model.
   });
   // Defines the prompt for generating exam from a file.
-  const prompt = `Using the input file as a sample, generate a new set of examination questions similar to the questions in the file or image.\n${
+  const prompt = `Using the input file as a sample, generate set of examination questions.\nThe questions must be ${
+    file.configurations.type === "exact"
+      ? "exactly the same as the input sample with no variable changes"
+      : file.configurations.type === "partial"
+      ? "exactly the same as the input sample but with variables changed"
+      : ""
+  }${
     file.configurations.type === "custom"
       ? ""
-      : `\nmake sure the questions is exactly ${
+      : `\nThe questions must be ${
+          file.configurations.typeconfig === "exact"
+            ? "exactly the same as the input sample"
+            : file.configurations.typeconfig === "harder"
+            ? "harder than the input sample"
+            : "easier than the input sample"
+        } Make sure the questions is exactly ${
           file.configurations.questions || 10
         } in numbers and its within the timeframe of ${
           file.configurations.time
         }`
-  }\nDo not generate same questions as given in the sample data`;
+  }.`;
 
   try {
     // Converts the file to the required format.
