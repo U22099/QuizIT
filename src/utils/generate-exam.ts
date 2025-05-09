@@ -28,27 +28,30 @@ const schema = {
         },
         required: ["question", "answer"],
       },
-    }
+    },
   },
   required: ["time", "data"],
-}
+};
 
 interface InputType {
-  input: string,
+  input: string;
   configurations: {
-    disabled: boolean,
-    time: number,
-    questions: number
-  }
+    time: number;
+    questions: number;
+    type: "exact" | "partial" | "custom";
+    typeconfig: "exact" | "harder" | "easier";
+  };
 }
 
 interface OutputType {
-  time: number,
-  data: { question: string, answer: string } [] | []
+  time: number;
+  data: { question: string; answer: string }[] | [];
 }
 
 // Asynchronous function to generate exam from text using Google Gemini.
-export async function GenerateExamForText(data: InputType): Promise<OutputType> {
+export async function GenerateExamForText(
+  data: InputType
+): Promise<OutputType> {
   // Creates a new Google Generative AI instance.
   const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
   // Gets the Gemini 2.0 Flash Thinking model with specific generation configurations and system instructions.
@@ -58,10 +61,21 @@ export async function GenerateExamForText(data: InputType): Promise<OutputType> 
       responseMimeType: "application/json", //Specifies the response type as JSON.
       responseSchema: schema, //Specifies the schema for the response.
     },
-    systemInstruction: "You are an expert at generating examination questions from sample questions and also giving answers to each question while assigning a total time frame in minutes expected for the student to complete the exam", //Instruction for the model.
+    systemInstruction:
+      "You are an expert at generating examination questions from sample questions and also giving answers to each question while assigning a total time frame in minutes expected for the student to complete the exam", //Instruction for the model.
   });
   // Defines the prompt for generating exam.
-  const prompt = `Using the input below as a sample, generate a new set of examination questions:\n${data.input}${data.configurations.disabled ? "": `\nmake sure the questions is exactly ${data.configurations.questions || 10} in numbers and its within the timeframe of ${data.configurations.time}`}\nDo not generate same questions as given in the sample data just generate similar questions`;
+  const prompt = `Using the input below as a sample, generate a new set of examination questions:\n${
+    data.input
+  }${
+    data.configurations.type === "custom"
+      ? ""
+      : `\nmake sure the questions is exactly ${
+          data.configurations.questions || 10
+        } in numbers and its within the timeframe of ${
+          data.configurations.time
+        }`
+  }\nDo not generate same questions as given in the sample data just generate similar questions`;
 
   try {
     // Generates exams from the given text using the model.
@@ -74,13 +88,15 @@ export async function GenerateExamForText(data: InputType): Promise<OutputType> 
     console.log(e); // Logs any errors that occur during exam generation.
     return {
       time: 0,
-      data: []
+      data: [],
     };
   }
 }
 
 // Asynchronous function to generate exams from a file using Google Gemini.
-export async function GenerateExamForFile(file: InputType): Promise<OutputType> {
+export async function GenerateExamForFile(
+  file: InputType
+): Promise<OutputType> {
   // Creates a new Google Generative AI instance.
   const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
   // Gets the Gemini 2.0 Flash Thinking model with specific generation configurations and system instructions.
@@ -90,10 +106,19 @@ export async function GenerateExamForFile(file: InputType): Promise<OutputType> 
       responseMimeType: "application/json", //Specifies the response type as JSON.
       responseSchema: schema, //Specifies the schema for the response.
     },
-    systemInstruction: "You are an expert at generating new examination questions from sample files or image containing sample questions to use as guidance in generating a different set of questions and also giving answers to each question while assigning a total time frame in minutes expected for the student to complete the exam", //Instruction for the model.
+    systemInstruction:
+      "You are an expert at generating new examination questions from sample files or image containing sample questions to use as guidance in generating a different set of questions and also giving answers to each question while assigning a total time frame in minutes expected for the student to complete the exam", //Instruction for the model.
   });
   // Defines the prompt for generating exam from a file.
-  const prompt = `Using the input file as a sample, generate a new set of examination questions similar to the questions in the file or image.\n${file.configurations.disabled ? "": `\nmake sure the questions is exactly ${file.configurations.questions || 10} in numbers and its within the timeframe of ${file.configurations.time}`}\nDo not generate same questions as given in the sample data`;
+  const prompt = `Using the input file as a sample, generate a new set of examination questions similar to the questions in the file or image.\n${
+    file.configurations.type === "custom"
+      ? ""
+      : `\nmake sure the questions is exactly ${
+          file.configurations.questions || 10
+        } in numbers and its within the timeframe of ${
+          file.configurations.time
+        }`
+  }\nDo not generate same questions as given in the sample data`;
 
   try {
     // Converts the file to the required format.
@@ -107,13 +132,15 @@ export async function GenerateExamForFile(file: InputType): Promise<OutputType> 
     console.log(e.message); // Logs any errors that occur during exam generation.
     return {
       time: 0,
-      data: []
+      data: [],
     };
   }
 }
 
 // Asynchronous function to convert a file to a format suitable for Google Generative AI.
-async function fileToGenerativePart(file: string): Promise<{inlineData: { data: string, mimeType: string }}> {
+async function fileToGenerativePart(
+  file: string
+): Promise<{ inlineData: { data: string; mimeType: string } }> {
   // Converts the file to base64.
   const base64 = file;
   // Extracts the data and mime type from the base64 string.
@@ -123,7 +150,7 @@ async function fileToGenerativePart(file: string): Promise<{inlineData: { data: 
   return {
     inlineData: {
       data,
-      mimeType
+      mimeType,
     },
   };
 }
