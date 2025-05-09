@@ -86,7 +86,7 @@ export function Home({ setExam }: HomeProps): JSX.Element {
             (!configurations.time ||
               !configurations.questions ||
               !configurations.typeconfig)) ||
-          !!data.data
+          !data.data
         }
         onClick={handleSubmit}
         className="w-full button disabled:opacity-50"
