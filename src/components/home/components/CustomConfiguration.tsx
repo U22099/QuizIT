@@ -13,7 +13,7 @@ interface CustomConfigurationProps {
 export function CustomConfiguration({
   setConfigurations,
 }: CustomConfigurationProps): JSX.Element {
-  const [type, setType] = useState<"exact" | "partial" | "custom">();
+  const [type, setType] = useState<"exact" | "partial" | "custom">("exact");
   const [error, setError] = useState<string>("");
 
   const handleExamType = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -54,6 +54,7 @@ export function CustomConfiguration({
 
   const handleTime = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError("");
+    console.log(e);
     if (!e.target.value) return;
     if (parseInt(e.target.value) > 24 * 60) {
       setError("Time must be less than a day");

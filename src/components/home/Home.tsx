@@ -89,7 +89,7 @@ export function Home({ setExam }: HomeProps): JSX.Element {
           !data.data
         }
         onClick={handleSubmit}
-        className="w-full button disabled:opacity-50"
+        className="w-full button disabled:opacity-50 flex gap-1 items-center justify-center"
       >
         {loading ? (
           <FiLoader className="mx-auto animate-spin w-8 h-8 fill-white dark:fill-black" />
