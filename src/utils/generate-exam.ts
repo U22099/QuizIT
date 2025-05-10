@@ -22,7 +22,7 @@ const schema = {
           },
           answer: {
             type: SchemaType.STRING,
-            description: "answer",
+            description: "answer to the question asked",
             nullable: false,
           },
         },
@@ -83,16 +83,16 @@ export async function GenerateExamForText(
       responseSchema: schema, //Specifies the schema for the response.
     },
     systemInstruction:
-      "You are to generate a set of questions with answers to the questions using the input file or image as a sample document. If not specified, assign a reasonable timeframe in which the user would be expected to finish the examination in minutes.", //Instruction for the model.
+      "You are to generate an array of object with question and answer to the question using the input file or image as a sample document. If not specified, assign a reasonable timeframe in which the user would be expected to finish the examination in minutes.", //Instruction for the model.
   });
   // Defines the prompt for generating exam.
-  const prompt = `Using the input below as a sample, generate set of examination questions and answers to the questions:\n${
+  const prompt = `Using the input below as a sample, an array of object with question and answer to the question:\n${
     data.input
   }\nThe questions must be ${
     data.configurations.type === "exact"
       ? "exactly the same as the input sample with no variable changes"
       : data.configurations.type === "partial"
-      ? "exactly the same as the input sample but with variables changed"
+      ? "exactly the same as the input sample but with variables changed eg if the input sample is 3x you can change the variable to 6x"
       : ""
   }${
     data.configurations.type === "custom"
@@ -140,14 +140,14 @@ export async function GenerateExamForFile(
       responseSchema: schema, //Specifies the schema for the response.
     },
     systemInstruction:
-      "You are to generate a set of questions with answers to the questions using the input file or image as a sample document. If not specified, assign a reasonable timeframe in which the user would be expected to finish the examination in minutes.", //Instruction for the model.
+      "You are to generate an array of object with question and answer to the question using the input file or image as a sample document. If not specified, assign a reasonable timeframe in which the user would be expected to finish the examination in minutes.", //Instruction for the model.
   });
   // Defines the prompt for generating exam from a file.
-  const prompt = `Using the input file as a sample, generate set of examination questions and answers to the questions.\nThe questions must be ${
+  const prompt = `Using the input file as a sample, an array of object with question and answer to the question.\nThe questions must be ${
     file.configurations.type === "exact"
       ? "exactly the same as the input sample with no variable changes"
       : file.configurations.type === "partial"
-      ? "exactly the same as the input sample but with variables changed"
+      ? "exactly the same as the input sample but with the variables changed eg if the input sample is 3x you can change the variable to 6x"
       : ""
   }${
     file.configurations.type === "custom"
