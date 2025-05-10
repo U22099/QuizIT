@@ -152,7 +152,7 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
           </button>
         )}
         {error && <p className="font-bold text-red-600 font-xs">{error}</p>}
-        {resultPage && analysis.length && (
+        {(resultPage && analysis.length > 0) && (
           <h1 className="font-bold text-lg mb-2 mt-10">Analysis</h1>
         )}
         {resultPage &&
