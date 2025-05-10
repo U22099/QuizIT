@@ -33,7 +33,7 @@ const schema = {
   required: ["time", "data"],
 };
 
-const schemaAnswer = {
+const answerSchema = {
   type: SchemaType.ARRAY,
   items: {
     type: SchemaType.OBJECT,
@@ -43,13 +43,14 @@ const schemaAnswer = {
         description: "answer to the question with thorough explanation",
         nullable: false,
       },
-      questionsTopicAndBriefIntro: {
+      topicExp: {
         type: SchemaType.STRING,
-        description: "a brief but compactful intro to the topic in with the question is based on",
+        description:
+          "a detailed explanation of the topic to which the question is based",
         nullable: false,
       },
     },
-    required: ["answer", "questionsTopicAndBriefIntro"],
+    required: ["answer", "topicExp"],
   },
 };
 
@@ -65,13 +66,13 @@ interface InputType {
 
 interface OutputType {
   time: number;
-  data: { question: string;answer: string } [] | [];
+  data: { question: string; answer: string }[] | [];
 }
 
 // Asynchronous function to generate exam from text using Google Gemini.
 export async function GenerateExamForText(
   data: InputType
-): Promise <OutputType> {
+): Promise<OutputType> {
   // Creates a new Google Generative AI instance.
   const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
   // Gets the Gemini 2.0 Flash Thinking model with specific generation configurations and system instructions.
@@ -81,10 +82,11 @@ export async function GenerateExamForText(
       responseMimeType: "application/json", //Specifies the response type as JSON.
       responseSchema: schema, //Specifies the schema for the response.
     },
-    systemInstruction: "You are to generate a set of questions with answers using the input file or image as a sample document. If not specified, assign a reasonable timeframe in which the user would be expected to finish the examination in minutes.", //Instruction for the model.
+    systemInstruction:
+      "You are to generate a set of questions with answers to the questions using the input file or image as a sample document. If not specified, assign a reasonable timeframe in which the user would be expected to finish the examination in minutes.", //Instruction for the model.
   });
   // Defines the prompt for generating exam.
-  const prompt = `Using the input below as a sample, generate set of examination questions:\n${
+  const prompt = `Using the input below as a sample, generate set of examination questions and answers to the questions:\n${
     data.input
   }\nThe questions must be ${
     data.configurations.type === "exact"
@@ -107,7 +109,7 @@ export async function GenerateExamForText(
           data.configurations.time
         }`
   }`;
-  
+
   try {
     // Generates exams from the given text using the model.
     const generatedContent = await model.generateContent(prompt);
@@ -127,7 +129,7 @@ export async function GenerateExamForText(
 // Asynchronous function to generate exams from a file using Google Gemini.
 export async function GenerateExamForFile(
   file: InputType
-): Promise <OutputType> {
+): Promise<OutputType> {
   // Creates a new Google Generative AI instance.
   const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
   // Gets the Gemini 2.0 Flash Thinking model with specific generation configurations and system instructions.
@@ -137,10 +139,11 @@ export async function GenerateExamForFile(
       responseMimeType: "application/json", //Specifies the response type as JSON.
       responseSchema: schema, //Specifies the schema for the response.
     },
-    systemInstruction: "You are to generate a set of questions with answers using the input file or image as a sample document. If not specified, assign a reasonable timeframe in which the user would be expected to finish the examination in minutes.", //Instruction for the model.
+    systemInstruction:
+      "You are to generate a set of questions with answers to the questions using the input file or image as a sample document. If not specified, assign a reasonable timeframe in which the user would be expected to finish the examination in minutes.", //Instruction for the model.
   });
   // Defines the prompt for generating exam from a file.
-  const prompt = `Using the input file as a sample, generate set of examination questions.\nThe questions must be ${
+  const prompt = `Using the input file as a sample, generate set of examination questions and answers to the questions.\nThe questions must be ${
     file.configurations.type === "exact"
       ? "exactly the same as the input sample with no variable changes"
       : file.configurations.type === "partial"
@@ -161,7 +164,7 @@ export async function GenerateExamForFile(
           file.configurations.time
         }`
   }.`;
-  
+
   try {
     // Converts the file to the required format.
     const filePart = await fileToGenerativePart(file.input);
@@ -182,7 +185,7 @@ export async function GenerateExamForFile(
 // Asynchronous function to convert a file to a format suitable for Google Generative AI.
 async function fileToGenerativePart(
   file: string
-): Promise <{ inlineData: { data: string;mimeType: string } }> {
+): Promise<{ inlineData: { data: string; mimeType: string } }> {
   // Converts the file to base64.
   const base64 = file;
   // Extracts the data and mime type from the base64 string.
@@ -198,8 +201,8 @@ async function fileToGenerativePart(
 }
 
 export async function AnalyseAnswer(
-  data: { question: string, studentsAnswer: string } []
-): Promise <{answer: string, questionsTopicAndBriefIntro: string}[]> {
+  data: { question: string; studentsAnswer: string }[]
+): Promise<{ answer: string; topicExp: string }[]> {
   // Creates a new Google Generative AI instance.
   const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
   // Gets the Gemini 2.0 Flash Thinking model with specific generation configurations and system instructions.
@@ -209,11 +212,12 @@ export async function AnalyseAnswer(
       responseMimeType: "application/json", //Specifies the response type as JSON.
       responseSchema: answerSchema, //Specifies the schema for the response.
     },
-    systemInstruction: "You are to analyse the input which would be in the format\n {question: string, studentsAnswer: string}[] \n analyse each question and return an array of objects with answer and questionsTopicAndBriefIntro to rach question accordingly", //Instruction for the model.
+    systemInstruction:
+      "You are to analyse the input which would be in the format\n {question: string, studentsAnswer: string}[] \n analyse each question and return an array of objects with answer to the question and also showing student's mistakes and topicExp to each question accordingly, the topicExp must contain relevant knowlege about the topic to which the question is based", //Instruction for the model.
   });
   // Defines the prompt for generating exam.
   const prompt = `Analyse this input: ${JSON.stringify(data)}`;
-  
+
   try {
     // Generates exams from the given text using the model.
     const generatedContent = await model.generateContent(prompt);
@@ -223,6 +227,6 @@ export async function AnalyseAnswer(
     return JSON.parse(response);
   } catch (e: any) {
     console.log(e); // Logs any errors that occur during exam generation.
-    return [{ answer: "", questionsTopicAndBriefIntro: "" }];
+    return [{ answer: "", topicExp: "" }];
   }
 }

@@ -66,9 +66,9 @@ export function CustomConfiguration({
   };
 
   return (
-    <section className="flex flex-col gap-3 mt-2 w-full items-start justify-start">
+    <section className="flex flex-col gap-3 mt-2 w-full items-start justify-start text-text">
       <div className="w-full flex gap-1">
-        <label htmlFor="type" className="font-bold text-md text-text">
+        <label htmlFor="type" className="font-bold text-md ">
           Select Exam Output Type:
         </label>
         <select

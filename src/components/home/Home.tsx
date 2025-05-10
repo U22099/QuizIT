@@ -67,8 +67,8 @@ export function Home({ setExam }: HomeProps): JSX.Element {
     }
   };
   return (
-    <main className="bg-none flex flex-col gap-2 justify-start items-center mt-5 w-full h-full p-4">
-      <h1 className="text-xl font-bold text-text">Sample Question</h1>
+    <main className="bg-none flex flex-col gap-2 justify-start items-center mt-5 w-full md:w-[50%] h-full p-4 text-text">
+      <h1 className="text-xl font-bold">Sample Question</h1>
       <section className="flex gap-2 w-fit mx-auto">
         {nav === "text" ? (
           <TextInput setData={setData} />
@@ -92,7 +92,7 @@ export function Home({ setExam }: HomeProps): JSX.Element {
         className="w-full button disabled:opacity-50 flex gap-1 items-center justify-center"
       >
         {loading ? (
-          <FiLoader className="mx-auto animate-spin w-8 h-8 fill-white dark:fill-black" />
+          <FiLoader className="animate-spin w-8 h-8 fill-white dark:fill-black" />
         ) : (
           ""
         )}{" "}
