@@ -77,7 +77,7 @@ export async function GenerateExamForText(
   const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
   // Gets the Gemini 2.0 Flash Thinking model with specific generation configurations and system instructions.
   const model = genAI.getGenerativeModel({
-    model: "gemini-2.5-pro-preview-05-06",
+    model: "gemini-2.5-flash-preview-05-20",
     generationConfig: {
       responseMimeType: "application/json", //Specifies the response type as JSON.
       responseSchema: schema, //Specifies the schema for the response.
@@ -134,7 +134,7 @@ export async function GenerateExamForFile(
   const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
   // Gets the Gemini 2.0 Flash Thinking model with specific generation configurations and system instructions.
   const model = genAI.getGenerativeModel({
-    model: "gemini-2.5-pro-preview-05-06",
+    model: "gemini-2.5-flash-preview-05-20",
     generationConfig: {
       responseMimeType: "application/json", //Specifies the response type as JSON.
       responseSchema: schema, //Specifies the schema for the response.
@@ -207,7 +207,7 @@ export async function AnalyseAnswer(
   const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
   // Gets the Gemini 2.0 Flash Thinking model with specific generation configurations and system instructions.
   const model = genAI.getGenerativeModel({
-    model: "gemini-2.5-pro-preview-05-06",
+    model: "gemini-2.5-flash-preview-05-20",
     generationConfig: {
       responseMimeType: "application/json", //Specifies the response type as JSON.
       responseSchema: answerSchema, //Specifies the schema for the response.
