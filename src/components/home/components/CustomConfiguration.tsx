@@ -66,12 +66,12 @@ export function CustomConfiguration({
     setError("");
     console.log(e);
     if (!e.target.value) return;
-    if (parseTime(e.target.value) > 24 * 60) {
+    if (e.target.valueAsNumber > 24 * 60) {
       setError("Time must be less than a day");
       return;
     }
     setConfigurations((prevValue) => {
-      return { ...prevValue, time: parseTime(e.target.value) || 0 };
+      return { ...prevValue, time: e.target.valueAsNumber || 0 };
     });
   };
 
@@ -147,17 +147,17 @@ export function CustomConfiguration({
         )}
         <div className="flex gap-2 justify-start items-center">
           <label htmlFor="time" className="font-bold text-md text-text">
-            Time
+            Duration
           </label>
           <div className="flex justify-start items-center gap-2 bg-primary p-2 rounded-md border">
             <input
               onChange={handleTime}
-              type="time"
+              type="number"
               id="time"
               className="w-fit bg-transparent focus-visible:outline-none text-text"
-              placeholder="0"
+              defaultValue={1}
             />
-            <p className="font-bold text-text">Hours</p>
+            <p className="font-bold text-text">Minutes</p>
           </div>
         </div>
         {error && <p className="text-red-700 font-bold">{error}</p>}
