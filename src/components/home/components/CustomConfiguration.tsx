@@ -154,7 +154,7 @@ export function CustomConfiguration({
               onChange={handleTime}
               type="number"
               id="time"
-              className="w-fit bg-transparent focus-visible:outline-none text-text"
+              className="w-32 bg-transparent focus-visible:outline-none text-text"
             />
             <p className="font-bold text-text">Minutes</p>
           </div>
