@@ -43,6 +43,7 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
       setError("");
       const data = exam.data.data.map((x, i) => ({
         question: x.question,
+        questionsOptions: x.options || [],
         studentsAnswer: answers[i],
       }));
       const response = await AnalyseAnswer(data);
@@ -177,7 +178,7 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
                 </div>
                 <div>
                   <p className="font-bold text-lg">Brief Topic Intro</p>
-                  <p className="text-blue-500">{x.topicExp}</p>
+                  <p className="text-fuchsia-600">{x.topicExp}</p>
                 </div>
               </div>
             );
