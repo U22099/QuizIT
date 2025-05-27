@@ -155,7 +155,6 @@ export function CustomConfiguration({
               type="number"
               id="time"
               className="w-fit bg-transparent focus-visible:outline-none text-text"
-              defaultValue={1}
             />
             <p className="font-bold text-text">Minutes</p>
           </div>
