@@ -208,7 +208,7 @@ async function fileToGenerativePart(
 }
 
 export async function AnalyseAnswer(
-  data: { question: string; studentsAnswer: string; options?: string[] }[]
+  data: { question: string; studentsAnswer: string; questionOptions: string[] }[]
 ): Promise<{ answer: string; topicExp: string }[]> {
   // Creates a new Google Generative AI instance.
   const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
