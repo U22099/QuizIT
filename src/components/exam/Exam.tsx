@@ -178,7 +178,7 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
                 </div>
                 <div>
                   <p className="font-bold text-lg">Brief Topic Intro</p>
-                  <p className="text-blue-500">{x.topicExp}</p>
+                  <p className="text-fuchsia-600">{x.topicExp}</p>
                 </div>
               </div>
             );
