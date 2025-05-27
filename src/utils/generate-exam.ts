@@ -208,7 +208,7 @@ async function fileToGenerativePart(
 }
 
 export async function AnalyseAnswer(
-  data: { question: string; studentsAnswer: string }[]
+  data: { question: string; studentsAnswer: string; options?: string[] }[]
 ): Promise<{ answer: string; topicExp: string }[]> {
   // Creates a new Google Generative AI instance.
   const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
@@ -220,7 +220,7 @@ export async function AnalyseAnswer(
       responseSchema: answerSchema, //Specifies the schema for the response.
     },
     systemInstruction:
-      "You are to analyse the input which would be in the format\n {question: string, studentsAnswer: string}[] \n analyse each question and return an array of objects with answer to the question and also showing student's mistakes and topicExp to each question accordingly, the topicExp must contain relevant knowlege about the topic to which the question is based", //Instruction for the model.
+      "You are to analyse the input which would be in the format\n {question: string, studentsAnswer: string; options?: string[] }[] \n analyse each question and return an array of objects with answer to the question and also showing student's mistakes and topicExp to each question accordingly, the topicExp must contain relevant knowlege about the topic to which the question is based", //Instruction for the model.
   });
   // Defines the prompt for generating exam.
   const prompt = `Analyse this input: ${JSON.stringify(data)}`;
