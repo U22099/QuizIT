@@ -75,10 +75,10 @@ export function CustomConfiguration({
     });
   };
 
-  const parseTime = (value: string) => {
+  /*const parseTime = (value: string) => {
     const parts = value.split(":");
     return parseInt(parts[0]) * 60 + parseInt(parts[1]);
-  };
+  };*/
 
   useEffect(
     () => setType(inputType === "json" ? "custom" : "exact"),
