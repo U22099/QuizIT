@@ -1,4 +1,5 @@
 import { JSX, Dispatch, SetStateAction } from "react";
+import { BsBraces } from "react-icons/bs";
 import { FaFilePdf } from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
 
@@ -24,6 +25,14 @@ export function InputNav({ nav, setNav }: InputNavProps): JSX.Element {
         onClick={() => setNav("file")}
         className={
           nav === "file"
+            ? "bg-black dark:bg-white fill-white dark:fill-black" + custom_style
+            : "fill-black dark:fill-white" + custom_style
+        }
+      />
+      <BsBraces
+        onClick={() => setNav("json")}
+        className={
+          nav === "json"
             ? "bg-black dark:bg-white fill-white dark:fill-black" + custom_style
             : "fill-black dark:fill-white" + custom_style
         }

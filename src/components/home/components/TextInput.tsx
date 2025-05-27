@@ -13,7 +13,7 @@ export function TextInput({ setData }: TextInputProps): JSX.Element {
   return (
     <textarea
       className="flex justify-center items-center border rounded-md p-2 text-sm w-64 h-56 focus-visible:outline-none border bg-transparent backdrop-blur-sm text-text"
-      placeholder="Paste/Type in a sample question set"
+      placeholder="Paste/Type in a sample question set, topic, or related article"
       onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
         setData({
           type: "text",

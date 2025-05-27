@@ -11,7 +11,7 @@ interface ExamProps {
       started: boolean;
       data: {
         time: number;
-        data: { question: string; answer: string }[] | [];
+        data: { question: string; answer: string; options?: string[] }[] | [];
       };
     }>
   >;
@@ -19,7 +19,7 @@ interface ExamProps {
     started: boolean;
     data: {
       time: number;
-      data: { question: string; answer: string }[] | [];
+      data: { question: string; answer: string; options?: string[] }[] | [];
     };
   };
 }
@@ -109,10 +109,14 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
       <section className="flex flex-col gap-2 p-2 w-full h-full overflow-y-auto mb-5">
         {!resultPage
           ? exam.data.data.map(
-              (ques: { question: string; answer: string }, i: number) => (
+              (
+                ques: { question: string; answer: string; options?: string[] },
+                i: number
+              ) => (
                 <ExamList
                   data={{
                     question: ques.question,
+                    options: ques.options || [],
                     action: (data: string): void => {
                       setAnswers((prevAns) =>
                         prevAns.map((x, index) => (index === i ? data : x))
@@ -123,7 +127,10 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
               )
             )
           : exam.data.data.map(
-              (ques: { question: string; answer: string }, i: number) => (
+              (
+                ques: { question: string; answer: string; options?: string[] },
+                i: number
+              ) => (
                 <AnswerList
                   data={{
                     question: ques.question,
@@ -152,7 +159,7 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
           </button>
         )}
         {error && <p className="font-bold text-red-600 font-xs">{error}</p>}
-        {(resultPage && analysis.length > 0) && (
+        {resultPage && analysis.length > 0 && (
           <h1 className="font-bold text-lg mb-2 mt-10">Analysis</h1>
         )}
         {resultPage &&

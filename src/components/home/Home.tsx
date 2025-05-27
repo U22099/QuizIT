@@ -45,16 +45,19 @@ export function Home({ setExam }: HomeProps): JSX.Element {
   const handleSubmit = async () => {
     setLoading(true);
     try {
+      console.log(data.data);
       const response =
-        data.type === "text"
-          ? await GenerateExamForText({
-              input: data.data,
-              configurations,
-            })
-          : await GenerateExamForFile({
-              input: data.data,
-              configurations,
-            });
+        nav !== "json"
+          ? data.type === "text"
+            ? await GenerateExamForText({
+                input: data.data,
+                configurations,
+              })
+            : await GenerateExamForFile({
+                input: data.data,
+                configurations,
+              })
+          : { time: configurations.time, data: JSON.parse(data.data) };
       console.log(response);
       setExam({
         started: true,
@@ -70,14 +73,17 @@ export function Home({ setExam }: HomeProps): JSX.Element {
     <main className="bg-none flex flex-col gap-2 justify-start items-center mt-5 w-full md:w-[50%] h-full p-4 text-text">
       <h1 className="text-xl font-bold">Sample Question</h1>
       <section className="flex gap-2 w-fit mx-auto">
-        {nav === "text" ? (
+        {["text", "json"].includes(nav) ? (
           <TextInput setData={setData} />
-        ) : (
+        ) : nav !== "json" ? (
           <FileInput setData={setData} />
-        )}
+        ) : null}
         <InputNav setNav={setNav} nav={nav} />
       </section>
-      <CustomConfiguration setConfigurations={setConfigurations} />
+      <CustomConfiguration
+        inputType={nav}
+        setConfigurations={setConfigurations}
+      />
       <button
         disabled={
           loading ||

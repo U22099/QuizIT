@@ -7,7 +7,8 @@ const schema = {
   properties: {
     time: {
       type: SchemaType.NUMBER,
-      description: "timeframe in minutes",
+      description:
+        "timeframe in which user is expected to finish the questions in minutes",
     },
     data: {
       description: "data",
@@ -24,6 +25,12 @@ const schema = {
             type: SchemaType.STRING,
             description: "answer to the question asked",
             nullable: false,
+          },
+          options: {
+            type: SchemaType.ARRAY,
+            description:
+              "Plausible array of three other options including the answer making four",
+            items: { type: SchemaType.STRING },
           },
         },
         required: ["question", "answer"],
@@ -77,16 +84,16 @@ export async function GenerateExamForText(
   const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
   // Gets the Gemini 2.0 Flash Thinking model with specific generation configurations and system instructions.
   const model = genAI.getGenerativeModel({
-    model: "gemini-1.5-pro",
+    model: "gemini-2.0-flash",
     generationConfig: {
       responseMimeType: "application/json", //Specifies the response type as JSON.
       responseSchema: schema, //Specifies the schema for the response.
     },
     systemInstruction:
-      "You are to generate an array of object with question and answer to the question using the input file or image as a sample document. If not specified, assign a reasonable timeframe in which the user would be expected to finish the examination in minutes.", //Instruction for the model.
+      "You are to generate an array of object with question, answer to the question, and options if needed which is an array of 3 other plausible distracting answers and the real answer as a fourth (randomly scattered) using the input text as a sample/base context e.g topic, article etc. If not specified, assign a reasonable timeframe in which the user would be expected to finish the examination in minutes. In short your output will be in the form { time: number; data: {question: string, answer: string, options?: string[]}[] }", //Instruction for the model.
   });
   // Defines the prompt for generating exam.
-  const prompt = `Using the input below as a sample, an array of object with question and answer to the question:\n${
+  const prompt = `Using the input below as a sample/base context, generaate an array of object with question, answer to the question, and options if needed which is an array of 3 other plausible distracting answers and the real answer as a fourth (randomly scattered):\n${
     data.input
   }\nThe questions must be ${
     data.configurations.type === "exact"
@@ -95,7 +102,7 @@ export async function GenerateExamForText(
       ? "exactly the same as the input sample but with variables changed eg if the input sample is 3x you can change the variable to 6x"
       : ""
   }${
-    data.configurations.type === "custom"
+    data.configurations.type !== "custom"
       ? ""
       : `\nThe questions must be ${
           data.configurations.typeconfig === "exact"
@@ -134,23 +141,23 @@ export async function GenerateExamForFile(
   const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
   // Gets the Gemini 2.0 Flash Thinking model with specific generation configurations and system instructions.
   const model = genAI.getGenerativeModel({
-    model: "gemini-1.5-pro",
+    model: "gemini-2.0-flash",
     generationConfig: {
       responseMimeType: "application/json", //Specifies the response type as JSON.
       responseSchema: schema, //Specifies the schema for the response.
     },
     systemInstruction:
-      "You are to generate an array of object with question and answer to the question using the input file or image as a sample document. If not specified, assign a reasonable timeframe in which the user would be expected to finish the examination in minutes.", //Instruction for the model.
+      "You are to generate an array of object with question, answer to the question, and options if needed which is an array of 3 other plausible distracting answers and the real answer as a fourth (randomly scattered) using the input file or image as a sample document. If not specified, assign a reasonable timeframe in which you'd expect the user to finish the examination in minutes. In short your output will be in the form { time: number; data: {question: string, answer: string, options?: string[]}[] }", //Instruction for the model.
   });
   // Defines the prompt for generating exam from a file.
-  const prompt = `Using the input file as a sample, an array of object with question and answer to the question.\nThe questions must be ${
+  const prompt = `Using the input file, generate an array of object with question, answer to the question, and options if needed which is an array of 3 other plausible distracting answers and the real answer as a fourth (randomly scattered).\nThe questions must be ${
     file.configurations.type === "exact"
       ? "exactly the same as the input sample with no variable changes"
       : file.configurations.type === "partial"
       ? "exactly the same as the input sample but with the variables changed eg if the input sample is 3x you can change the variable to 6x"
       : ""
   }${
-    file.configurations.type === "custom"
+    file.configurations.type !== "custom"
       ? ""
       : `\nThe questions must be ${
           file.configurations.typeconfig === "exact"
@@ -207,7 +214,7 @@ export async function AnalyseAnswer(
   const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
   // Gets the Gemini 2.0 Flash Thinking model with specific generation configurations and system instructions.
   const model = genAI.getGenerativeModel({
-    model: "gemini-1.5-pro",
+    model: "gemini-2.0-flash",
     generationConfig: {
       responseMimeType: "application/json", //Specifies the response type as JSON.
       responseSchema: answerSchema, //Specifies the schema for the response.
