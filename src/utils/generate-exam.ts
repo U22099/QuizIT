@@ -33,7 +33,7 @@ const schema = {
             items: { type: SchemaType.STRING },
           },
         },
-        required: ["question", "answer"],
+        required: ["question", "answer", "options"],
       },
     },
   },
@@ -90,32 +90,18 @@ export async function GenerateExamForText(
       responseSchema: schema, //Specifies the schema for the response.
     },
     systemInstruction:
-      "You are to generate an array of object with question, answer to the question, and options if needed which is an array of 3 other plausible distracting answers and the real answer as a fourth (randomly scattered) using the input text as a sample/base context e.g topic, article etc. If not specified, assign a reasonable timeframe in which the user would be expected to finish the examination in minutes. In short your output will be in the form { time: number; data: {question: string, answer: string, options?: string[]}[] }", //Instruction for the model.
+      "Generate a quiz based on the provided text (topic, article, etc.). The output should be a JSON object with two properties: time (estimated quiz completion time in minutes) and data (an array of question objects). Each question object should have a question (string), answer (string), and options (an array of four strings: three plausible distractors and the correct answer, randomly ordered). If a timeframe isn’t specified, estimate a reasonable one.", //Instruction for the model.
   });
   // Defines the prompt for generating exam.
-  const prompt = `Using the input below as a sample/base context, generaate an array of object with question, answer to the question, and options if needed which is an array of 3 other plausible distracting answers and the real answer as a fourth (randomly scattered):\n${
-    data.input
-  }\nThe questions must be ${
-    data.configurations.type === "exact"
-      ? "exactly the same as the input sample with no variable changes"
-      : data.configurations.type === "partial"
-      ? "exactly the same as the input sample but with variables changed eg if the input sample is 3x you can change the variable to 6x"
-      : ""
-  }${
-    data.configurations.type !== "custom"
-      ? ""
-      : `\nThe questions must be ${
-          data.configurations.typeconfig === "exact"
-            ? "exactly the same as the input sample"
-            : data.configurations.typeconfig === "harder"
-            ? "harder than the input sample"
-            : "easier than the input sample"
-        } Make sure the questions is exactly ${
-          data.configurations.questions || 10
-        } in numbers and its within the timeframe of ${
-          data.configurations.time
-        }`
-  }`;
+  const prompt = `Create a quiz based on the following input: ${data.input}. Each question should have a question, the correct answer, and four multiple-choice options (one correct, three plausible distractors, randomly ordered).
+  Question Type:
+
+  ${data.configurations.type === "exact" ? "Exact Match: Questions should be identical to the input text." : data.configurations.type === "partial" ? "Partial Variation: Questions should be similar to the input text, but with variable changes (e.g., '3x' becomes '6x')." : ""}
+
+  Custom Configuration (if applicable):
+
+  ${data.configurations.type !== "custom" ? "" : `Difficulty: ${data.configurations.typeconfig === "exact" ? "Exact Match" : data.configurations.typeconfig === "harder" ? "Harder" : "Easier"} than the input text. Number of Questions: ${data.configurations.questions || 10}. Time Limit: ${data.configurations.time} minutes.}`}
+  In Summary: Generate multiple-choice questions from the provided text. The difficulty and format of the questions depend on the configuration settings (exact match, partial variation, or custom). If using a custom configuration, adhere to the specified difficulty, number of questions, and time limit`;
 
   try {
     // Generates exams from the given text using the model.
@@ -147,30 +133,19 @@ export async function GenerateExamForFile(
       responseSchema: schema, //Specifies the schema for the response.
     },
     systemInstruction:
-      "You are to generate an array of object with question, answer to the question, and options if needed which is an array of 3 other plausible distracting answers and the real answer as a fourth (randomly scattered) using the input file or image as a sample document. If not specified, assign a reasonable timeframe in which you'd expect the user to finish the examination in minutes. In short your output will be in the form { time: number; data: {question: string, answer: string, options?: string[]}[] }", //Instruction for the model.
+      "Create a quiz based on the content of the provided file or image. The quiz should be a JSON object with two properties: time (estimated completion time in minutes) and data (an array of question objects)Each question object should have a question (string), answer (string), and options (an array of four strings: three plausible distractors and the correct answer, randomly ordered). If a specific time is not provided, estimate a reasonable completion time for the quiz", //Instruction for the model.
   });
   // Defines the prompt for generating exam from a file.
-  const prompt = `Using the input file, generate an array of object with question, answer to the question, and options if needed which is an array of 3 other plausible distracting answers and the real answer as a fourth (randomly scattered).\nThe questions must be ${
-    file.configurations.type === "exact"
-      ? "exactly the same as the input sample with no variable changes"
-      : file.configurations.type === "partial"
-      ? "exactly the same as the input sample but with the variables changed eg if the input sample is 3x you can change the variable to 6x"
-      : ""
-  }${
-    file.configurations.type !== "custom"
-      ? ""
-      : `\nThe questions must be ${
-          file.configurations.typeconfig === "exact"
-            ? "exactly the same as the input sample"
-            : file.configurations.typeconfig === "harder"
-            ? "harder than the input sample"
-            : "easier than the input sample"
-        } Make sure the questions is exactly ${
-          file.configurations.questions || 10
-        } in numbers and its within the timeframe of ${
-          file.configurations.time
-        }`
-  }.`;
+  const prompt = `Create a multiple-choice quiz from the provided file. Each question should have a question, the correct answer, and four options (one correct, three plausible distractors, randomly ordered).
+
+  Question Style:
+
+  ${file.configurations.type === "exact" ? "Exact Match: Questions must be identical to the source material in the file." : file.configurations.type === "partial" ? "Partial Variation: Questions must be similar to the source, but with variables changed (e.g., '3x' becomes '6x')." : ""}
+
+  Custom Configuration (if applicable):
+
+  ${file.configurations.type !== "custom" ? "" : `Difficulty: ${file.configurations.typeconfig === "exact" ? "Exact Match" : file.configurations.typeconfig === "harder" ? "Harder" : "Easier"} than the original content. Number of Questions: ${file.configurations.questions || 10}. Time Limit: ${file.configurations.time} minutes.}`}
+  Summary: Generate multiple-choice questions based on the file content. The difficulty and format of the questions depend on the file.configurations settings (exact match, partial variation, or custom). If using a custom configuration, adhere to the specified difficulty level, number of questions, and time limit.`;
 
   try {
     // Converts the file to the required format.
@@ -209,7 +184,7 @@ async function fileToGenerativePart(
 
 export async function AnalyseAnswer(
   data: { question: string; studentsAnswer: string; questionsOptions: string[] }[]
-): Promise<{ answer: string; topicExp: string }[]> {
+): Promise<{ answer: string; topicExp: string }[] | []> {
   // Creates a new Google Generative AI instance.
   const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
   // Gets the Gemini 2.0 Flash Thinking model with specific generation configurations and system instructions.
@@ -220,7 +195,14 @@ export async function AnalyseAnswer(
       responseSchema: answerSchema, //Specifies the schema for the response.
     },
     systemInstruction:
-      "You are to analyse the input which would be in the format\n {question: string, studentsAnswer: string, questionsOptions?: string[] }[] \n analyse each question and return an array of objects with answer to the question and also showing student's mistakes and topicExp to each question accordingly, the topicExp must contain relevant knowlege about the topic to which the question is based", //Instruction for the model.
+      `Analyze an array of student responses, where each response is an object with the following format: {question: string, studentsAnswer: string, questionsOptions?: string[]}.
+
+      For each question, return an array of objects. Each object should contain:
+
+      answer: The correct answer to the question.
+      studentsMistakes: A clear explanation of the student’s error.
+      topicExp: A concise explanation of the underlying topic, providing relevant knowledge related to the question.
+      The overall goal is to provide a detailed analysis of each student’s answer, highlighting errors and offering relevant background information.`, //Instruction for the model.
   });
   // Defines the prompt for generating exam.
   const prompt = `Analyse this input: ${JSON.stringify(data)}`;
@@ -234,6 +216,6 @@ export async function AnalyseAnswer(
     return JSON.parse(response);
   } catch (e: any) {
     console.log(e); // Logs any errors that occur during exam generation.
-    return [{ answer: "", topicExp: "" }];
+    return [];
   }
 }

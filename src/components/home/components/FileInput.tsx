@@ -53,9 +53,9 @@ export function FileInput({ setData }: FileInputProps): JSX.Element {
     }
   };
   return (
-    <section>
+    <section className="w-full">
       <label
-        className="flex justify-center items-center border rounded-md p-2 text-md w-64 h-56 bg-transparent backdrop-blur-sm text-text"
+        className="flex justify-center items-center border border-black dark:border-gray-600 rounded-md p-2 text-md w-full h-56 bg-transparent backdrop-blur-sm text-text"
         htmlFor="input"
       >
         {output.error ? (
@@ -65,7 +65,7 @@ export function FileInput({ setData }: FileInputProps): JSX.Element {
         ) : output.type === "pdf" ? (
           <embed src={output.data} className="w-full h-full object-cover" />
         ) : (
-          <p className="fold-bold text-text">{output.data}</p>
+          <p className="fold-bold text-fuchsia-400">{output.data}</p>
         )}
         <input
           id="input"

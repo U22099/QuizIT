@@ -14,7 +14,7 @@ function App(): JSX.Element {
     if (exam.started) window.scrollTo({ top: 0, behavior: "smooth" });
   }, [exam.started]);
   return (
-    <main className="bg-none flex justify-center items-center w-full h-full">
+    <main className="flex justify-center items-center w-full h-full select-none">
       {exam.started ? (
         <Exam exam={exam} setExam={setExam} />
       ) : (
