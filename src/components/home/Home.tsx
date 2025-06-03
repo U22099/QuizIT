@@ -1,4 +1,4 @@
-import { JSX, useState, Dispatch, SetStateAction } from "react";
+import { JSX, useState, Dispatch, SetStateAction, useEffect } from "react";
 import { TextInput } from "./components/TextInput";
 import { FileInput } from "./components/FileInput";
 import { InputNav } from "./components/InputNav.tsx";
@@ -46,18 +46,17 @@ export function Home({ setExam }: HomeProps): JSX.Element {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      console.log(data.data);
       const response =
         nav !== "json"
           ? data.type === "text"
             ? await GenerateExamForText({
-                input: data.data,
-                configurations,
-              })
+              input: data.data,
+              configurations,
+            })
             : await GenerateExamForFile({
-                input: data.data,
-                configurations,
-              })
+              input: data.data,
+              configurations,
+            })
           : { time: configurations.time, data: JSON.parse(data.data) };
       console.log(response);
       setExam({
@@ -71,6 +70,7 @@ export function Home({ setExam }: HomeProps): JSX.Element {
       setLoading(false);
     }
   };
+  useEffect(() => setData({ type: nav, data: "" }), []);
   return (
     <main className="flex flex-col gap-2 justify-start items-center mt-5 w-full md:w-[50%] h-full p-4 text-text">
       <h1 className="text-xl font-bold">Input</h1>
@@ -95,6 +95,7 @@ export function Home({ setExam }: HomeProps): JSX.Element {
             (!configurations.time ||
               !configurations.questions ||
               !configurations.typeconfig)) ||
+          (nav === "json" && !configurations.time) ||
           !data.data
         }
         onClick={handleSubmit}
