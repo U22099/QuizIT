@@ -64,6 +64,7 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
       if (time > 0 && !resultPage) {
         setTime((prevTime) => prevTime - 1);
       } else {
+        setPage(0);
         setResultPage(true);
         clearInterval(interval);
       }
@@ -77,6 +78,7 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
     if (time >= 0 && !resultPage) {
       setTimer(formatTime(time));
     } else {
+      setPage(0);
       setResultPage(true);
     }
   }, [time]);
