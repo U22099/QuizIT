@@ -64,8 +64,7 @@ export function CustomConfiguration({
 
   const handleTime = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError("");
-    console.log(e);
-    if (!e.target.value) return;
+    if (!e.target.valueAsNumber) { setError("Please input a valid number"); return; }
     if (e.target.valueAsNumber > 24 * 60) {
       setError("Time must be less than a day");
       return;
@@ -93,7 +92,7 @@ export function CustomConfiguration({
           </label>
           <select
             id="type"
-            className="w-fit bg-primary p-2 rounded-md border focus-visible:outline-none text-text"
+            className="w-fit bg-primary p-2 rounded-md border border-black dark:border-gray-600 focus-visible:outline-none text-text"
             onChange={handleExamType}
             defaultValue="exact"
           >
@@ -121,7 +120,7 @@ export function CustomConfiguration({
               </label>
               <select
                 id="typeconfig"
-                className="w-fit bg-primary p-2 rounded-md border focus-visible:outline-none text-text"
+                className="w-fit bg-primary p-2 rounded-md border border-black dark:border-gray-600 focus-visible:outline-none text-text"
                 onChange={handleExamTypeConfig}
                 defaultValue="exact"
               >
@@ -139,7 +138,7 @@ export function CustomConfiguration({
                 type="number"
                 id="number"
                 inputMode="numeric"
-                className="w-fit max-w-20 h-9 bg-primary p-2 rounded-md border focus-visible:outline-none text-text"
+                className="w-fit max-w-20 h-9 bg-primary p-2 rounded-md border border-black dark:border-gray-600 focus-visible:outline-none text-text"
                 placeholder="0"
               />
             </div>
@@ -149,25 +148,25 @@ export function CustomConfiguration({
           <label htmlFor="time" className="font-bold text-md text-text">
             Duration
           </label>
-          <div className="flex justify-start items-center gap-2 bg-primary p-2 rounded-md border">
+          <div className="flex justify-start items-center gap-2 bg-primary p-2 rounded-md border border-black dark:border-gray-600">
             <input
               onChange={handleTime}
               type="number"
               id="time"
-              className="w-fit bg-transparent focus-visible:outline-none text-text"
+              className="w-32 bg-transparent focus-visible:outline-none text-text"
             />
             <p className="font-bold text-text">Minutes</p>
           </div>
         </div>
-        {error && <p className="text-red-700 font-bold">{error}</p>}
       </div>
+      {error && <p className="text-red-700 font-bold">{error}</p>}
       {inputType !== "json" && (
         <p className="text-sm text-text">
           {type === "exact"
             ? "Exact same questions in the input sample would be generated with same variable values and time limit (if not provided, AI generated)"
             : type === "partial"
-            ? "Exact same questions in the input sample would be generated with different variable values but same time limit (if not provided, AI generated)"
-            : "You are free to customize the type of examination you want"}
+              ? "Exact same questions in the input sample would be generated with different variable values but same time limit (if not provided, AI generated)"
+              : "You are free to customize the type of examination you want"}
         </p>
       )}
     </section>

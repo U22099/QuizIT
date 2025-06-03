@@ -1,4 +1,4 @@
-import { JSX, useState, Dispatch, SetStateAction } from "react";
+import { JSX, useState, Dispatch, SetStateAction, useEffect } from "react";
 import { TextInput } from "./components/TextInput";
 import { FileInput } from "./components/FileInput";
 import { InputNav } from "./components/InputNav.tsx";
@@ -41,40 +41,42 @@ export function Home({ setExam }: HomeProps): JSX.Element {
     typeconfig: "exact",
   });
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
   const [nav, setNav] = useState<string>("text");
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      console.log(data.data);
       const response =
         nav !== "json"
           ? data.type === "text"
             ? await GenerateExamForText({
-                input: data.data,
-                configurations,
-              })
+              input: data.data,
+              configurations,
+            })
             : await GenerateExamForFile({
-                input: data.data,
-                configurations,
-              })
+              input: data.data,
+              configurations,
+            })
           : { time: configurations.time, data: JSON.parse(data.data) };
       console.log(response);
       setExam({
         started: true,
         data: response,
       });
-    } catch (e) {
+    } catch (e: any) {
       console.log(e);
+      setError(e?.response?.data?.message || e?.message || "An Error Occured")
     } finally {
       setLoading(false);
     }
   };
+  useEffect(() => setData({ type: nav, data: "" }), []);
   return (
-    <main className="bg-none flex flex-col gap-2 justify-start items-center mt-5 w-full md:w-[50%] h-full p-4 text-text">
-      <h1 className="text-xl font-bold">Sample Question</h1>
-      <section className="flex gap-2 w-fit mx-auto">
+    <main className="flex flex-col gap-2 justify-start items-center mt-5 w-full md:w-[50%] h-full p-4 text-text">
+      <h1 className="text-xl font-bold">Input</h1>
+      <section className="flex gap-2 w-full mx-auto">
         {["text", "json"].includes(nav) ? (
-          <TextInput setData={setData} />
+          <TextInput setData={setData} type={nav} />
         ) : nav !== "json" ? (
           <FileInput setData={setData} />
         ) : null}
@@ -84,6 +86,7 @@ export function Home({ setExam }: HomeProps): JSX.Element {
         inputType={nav}
         setConfigurations={setConfigurations}
       />
+      {error && <p className="self-start text-red-700 font-bold">{error}</p>}
       <button
         disabled={
           loading ||
@@ -92,13 +95,14 @@ export function Home({ setExam }: HomeProps): JSX.Element {
             (!configurations.time ||
               !configurations.questions ||
               !configurations.typeconfig)) ||
+          (nav === "json" && !configurations.time) ||
           !data.data
         }
         onClick={handleSubmit}
         className="w-full button disabled:opacity-50 flex gap-1 items-center justify-center"
       >
         {loading ? (
-          <FiLoader className="animate-spin w-8 h-8 fill-white dark:fill-black" />
+          <FiLoader className="animate-spin w-6 h-6 stroke-black" />
         ) : (
           ""
         )}{" "}
