@@ -85,9 +85,11 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [resultPage, page]);
+  
   useEffect(() => {
     if (resultPage) setResult(calculateScore(exam.data.data.map((x) => x.answer), answers));
   }, [resultPage]);
+  
   return (
     <main className="flex flex-col gap-2 w-full md:w-[50%] h-full overflow-y-auto mt-10 text-text">
       <header className="flex w-full justify-between fixed top-0 left-0 z-10 backdrop-blur-sm p-2">
@@ -127,7 +129,7 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
           <BsArrowRight className="stroke-black dark:stroke-white"/>
         </div>
       </section>
-      {resultPage && (
+      {(resultPage && !!result) && (
         <section className="flex mx-auto gap-2 p-2 w-fit justify-start items-center rounded-md border">
           <p className="text-fuchsia-600 font-extrabold">Score: {result.correctAnswers}/{exam.data.data.length}</p>
           <p className="text-fuchsia-600 font-extrabold">Percentage: {result.percentageScore.toFixed(2)}%</p>
