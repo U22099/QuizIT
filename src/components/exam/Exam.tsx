@@ -64,7 +64,6 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
       if (time > 0 && !resultPage) {
         setTime((prevTime) => prevTime - 1);
       } else {
-        setPage(0);
         setResultPage(true);
         clearInterval(interval);
       }
@@ -78,7 +77,6 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
     if (time >= 0 && !resultPage) {
       setTimer(formatTime(time));
     } else {
-      setPage(0);
       setResultPage(true);
     }
   }, [time]);
@@ -128,7 +126,7 @@ export function Exam({ setExam, exam }: ExamProps): JSX.Element {
           <BsArrowRight className="stroke-black dark:stroke-white"/>
         </div>
       </section>
-      {result?.correctAnswers && result?.percentageScore && (
+      {resultPage && (
         <section className="flex mx-auto gap-2 p-2 w-fit justify-start items-center rounded-md border">
           <p className="text-fuchsia-600 font-extrabold">Score: {result.correctAnswers}/{exam.data.data.length}</p>
           <p className="text-fuchsia-600 font-extrabold">Percentage: {result.percentageScore.toFixed(2)}%</p>
