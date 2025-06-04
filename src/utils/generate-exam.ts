@@ -29,7 +29,7 @@ const schema = {
           options: {
             type: SchemaType.ARRAY,
             description:
-              "Plausible array of three other options including the answer making four",
+              "Plausible array of three other options including the answer making four ()",
             items: { type: SchemaType.STRING },
           },
         },
@@ -47,7 +47,7 @@ const answerSchema = {
     properties: {
       answer: {
         type: SchemaType.STRING,
-        description: "answer to the question with thorough explanation",
+        description: "answer to the question with thorough explanation of how the question was solved",
         nullable: false,
       },
       topicExp: {
@@ -90,10 +90,10 @@ export async function GenerateExamForText(
       responseSchema: schema, //Specifies the schema for the response.
     },
     systemInstruction:
-      "You are to generate an array of object with question, answer to the question, and options if needed which is an array of 3 other plausible distracting answers and the real answer as a fourth (randomly scattered) using the input text as a sample/base context e.g topic, article etc. If not specified, assign a reasonable timeframe in which the user would be expected to finish the examination in minutes. In short your output will be in the form { time: number; data: {question: string, answer: string, options?: string[]}[] }", //Instruction for the model.
+      "You are to generate an array of object with question, answer, and options, which is an array of 3 other plausible distracting answers and the real answer as a fourth (randomly scattered) using the input text as a sample/base context e.g topic, article etc. If not specified, assign a reasonable timeframe in which the user would be expected to finish the examination in minutes. In short your output will be in the form { time: number; data: {question: string, answer: string, options?: string[]}[] }, your question can be markdown formatted if need be", //Instruction for the model.
   });
   // Defines the prompt for generating exam.
-  const prompt = `Using the input below as a sample/base context, generaate an array of object with question, answer to the question, and options if needed which is an array of 3 other plausible distracting answers and the real answer as a fourth (randomly scattered):\n${
+  const prompt = `Using the input below as a sample/base context, generaate an array of object with question, answer, and options, which is an array of 3 other plausible distracting answers and the real answer as a fourth (randomly scattered):\n${
     data.input
   }\nThe questions must be ${
     data.configurations.type === "exact"
@@ -147,10 +147,10 @@ export async function GenerateExamForFile(
       responseSchema: schema, //Specifies the schema for the response.
     },
     systemInstruction:
-      "You are to generate an array of object with question, answer to the question, and options if needed which is an array of 3 other plausible distracting answers and the real answer as a fourth (randomly scattered) using the input file or image as a sample document. If not specified, assign a reasonable timeframe in which you'd expect the user to finish the examination in minutes. In short your output will be in the form { time: number; data: {question: string, answer: string, options?: string[]}[] }", //Instruction for the model.
+      "You are to generate an array of object with question, answer, and options, which is an array of 3 other plausible distracting answers and the real answer as a fourth (randomly scattered) using the input file or image as a sample document or my extracting questions, answers and options from the file or image if present. If not specified, assign a reasonable timeframe in which you'd expect the user to finish the examination in minutes. In short your output will be in the form { time: number; data: {question: string, answer: string, options: string[]}[] }, your question can be markdown formatted if need be", //Instruction for the model.
   });
   // Defines the prompt for generating exam from a file.
-  const prompt = `Using the input file, generate an array of object with question, answer to the question, and options if needed which is an array of 3 other plausible distracting answers and the real answer as a fourth (randomly scattered).\nThe questions must be ${
+  const prompt = `Using the input file, generate an array of object with question, answer, and options, which is an array of 3 other plausible distracting answers and the real answer as a fourth (randomly scattered).\nThe questions must be ${
     file.configurations.type === "exact"
       ? "exactly the same as the input sample with no variable changes"
       : file.configurations.type === "partial"
@@ -208,7 +208,7 @@ async function fileToGenerativePart(
 }
 
 export async function AnalyseAnswer(
-  data: { question: string; studentsAnswer: string; questionOptions: string[] }[]
+  data: { question: string; answer: string; studentsAnswer: string; questionOptions: string[] }[]
 ): Promise<{ answer: string; topicExp: string }[]> {
   // Creates a new Google Generative AI instance.
   const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
@@ -220,7 +220,7 @@ export async function AnalyseAnswer(
       responseSchema: answerSchema, //Specifies the schema for the response.
     },
     systemInstruction:
-      "You are to analyse the input which would be in the format\n {question: string, studentsAnswer: string; options?: string[] }[] \n analyse each question and return an array of objects with answer to the question and also showing student's mistakes and topicExp to each question accordingly, the topicExp must contain relevant knowlege about the topic to which the question is based", //Instruction for the model.
+      "You are to analyse the input which would be in the format\n {question: string, answer: string; studentsAnswer: string; questionOptions: string[] }[] \n analyse each question and return an array of objects with answer to the question and also showing student's mistakes and topic explanation to each question accordingly, the topicExp must contain relevant knowlege about the topic to which the question is based. Take note that the answer provided might not be the correct answer to the question so double check and confirm", //Instruction for the model.
   });
   // Defines the prompt for generating exam.
   const prompt = `Analyse this input: ${JSON.stringify(data)}`;
