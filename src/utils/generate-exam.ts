@@ -209,7 +209,7 @@ async function fileToGenerativePart(
 
 export async function AnalyseAnswer(
   data: { question: string; answer: string; studentsAnswer: string; questionOptions: string[] }[]
-): Promise<{ answer: string; topicExp: string }[]> {
+): Promise<{ answer: string; topicExp: string }[] | []> {
   // Creates a new Google Generative AI instance.
   const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
   // Gets the Gemini 2.0 Flash Thinking model with specific generation configurations and system instructions.
@@ -234,6 +234,6 @@ export async function AnalyseAnswer(
     return JSON.parse(response);
   } catch (e: any) {
     console.log(e); // Logs any errors that occur during exam generation.
-    return [{ answer: "", topicExp: "" }];
+    return [];
   }
 }
