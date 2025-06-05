@@ -166,7 +166,7 @@ export async function GenerateExamForFile(
             ? "exactly the same as the input sample/base context"
             : file.configurations.typeconfig === "harder"
             ? "harder than the input sample/base context"
-            : data.configurations.typeconfig === "very hard" ?
+            : file.configurations.typeconfig === "very hard" ?
             "very very hard (almost impossible to answer) than the input sample/base context" :
             "easier than the input sample/base context"
         } Make sure the questions is exactly ${
