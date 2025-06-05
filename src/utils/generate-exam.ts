@@ -67,7 +67,7 @@ interface InputType {
     time: number;
     questions: number;
     type: "exact" | "partial" | "custom";
-    typeconfig: "exact" | "harder" | "easier";
+    typeconfig: "exact" | "harder" | "very hard" | "easier";
   };
 }
 
