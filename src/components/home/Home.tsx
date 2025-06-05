@@ -33,7 +33,7 @@ export function Home({ setExam }: HomeProps): JSX.Element {
     time: number;
     questions: number;
     type: "exact" | "partial" | "custom";
-    typeconfig: "exact" | "harder" | "easier";
+    typeconfig: "exact" | "harder" | "very hard" | "easier";
   }>({
     time: 0,
     questions: 0,

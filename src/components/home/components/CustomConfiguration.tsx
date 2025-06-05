@@ -12,7 +12,7 @@ interface CustomConfigurationProps {
       time: number;
       questions: number;
       type: "exact" | "partial" | "custom";
-      typeconfig: "exact" | "harder" | "easier";
+      typeconfig: "exact" | "harder" | "very hard" | "easier";
     }>
   >;
   inputType: string;
@@ -45,7 +45,7 @@ export function CustomConfiguration({
       return {
         ...prevValue,
         typeconfig:
-          (e.target.value as unknown as "exact" | "harder" | "easier") ||
+          (e.target.value as unknown as "exact" | "harder" | "very hard" | "easier") ||
           "exact",
       };
     });
@@ -116,7 +116,7 @@ export function CustomConfiguration({
                 htmlFor="typeconfig"
                 className="font-bold text-md text-text"
               >
-                Type of questions
+                Difficulty of questions
               </label>
               <select
                 id="typeconfig"
@@ -124,9 +124,10 @@ export function CustomConfiguration({
                 onChange={handleExamTypeConfig}
                 defaultValue="exact"
               >
+                <option value="easier"> Easier </option>
                 <option value="exact"> Exact </option>
                 <option value="harder"> Harder </option>
-                <option value="easier"> Easier </option>
+                <option value="very hard"> Impossible </option>
               </select>
             </div>
             <div className="flex gap-2 justify-start items-center">

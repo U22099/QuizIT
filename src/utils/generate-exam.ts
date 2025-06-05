@@ -104,12 +104,14 @@ export async function GenerateExamForText(
   }${
     data.configurations.type !== "custom"
       ? ""
-      : `\nThe questions must be ${
+      : `\nThe questions' difficulty must be ${
           data.configurations.typeconfig === "exact"
             ? "exactly the same as the input sample"
             : data.configurations.typeconfig === "harder"
             ? "harder than the input sample"
-            : "easier than the input sample"
+            : data.configurations.typeconfig === "very hard" ?
+            "very very hard (almost impossible to answer) than the input sample" : 
+            "easier than the input sample"
         } Make sure the questions is exactly ${
           data.configurations.questions || 10
         } in numbers and its within the timeframe of ${
@@ -159,17 +161,19 @@ export async function GenerateExamForFile(
   }${
     file.configurations.type !== "custom"
       ? ""
-      : `\nThe questions must be ${
+      : `\nThe questions' difficulty must be ${
           file.configurations.typeconfig === "exact"
-            ? "exactly the same as the input sample"
+            ? "exactly the same as the input sample/base context"
             : file.configurations.typeconfig === "harder"
-            ? "harder than the input sample"
-            : "easier than the input sample"
+            ? "harder than the input sample/base context"
+            : data.configurations.typeconfig === "very hard" ?
+            "very very hard (almost impossible to answer) than the input sample/base context" :
+            "easier than the input sample/base context"
         } Make sure the questions is exactly ${
           file.configurations.questions || 10
         } in numbers and its within the timeframe of ${
           file.configurations.time
-        }`
+        }. if the questions are ti be extracted from the input file or image randomly select the required number of questions.`
   }.`;
 
   try {
