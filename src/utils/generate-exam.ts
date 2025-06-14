@@ -238,6 +238,7 @@ export async function AnalyseAnswer(
     return JSON.parse(response);
   } catch (e: any) {
     console.log(e); // Logs any errors that occur during exam generation.
+    throw new Error(e);
     return [];
   }
 }
